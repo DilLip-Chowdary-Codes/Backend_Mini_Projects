@@ -1,0 +1,247 @@
+{
+    "project_data": {
+        "users": [{
+                "username": "admin_1",
+                "profile_pic": "9919191919",
+                "is_admin": true,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238621"
+            },
+            {
+                "username": "admin_2",
+                "profile_pic": "9919191919",
+                "is_admin": true,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238622"
+            },
+            {
+                "username": "user_1",
+                "profile_pic": "9919191919",
+                "is_admin": false,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238621"
+            },
+            {
+                "username": "user_2",
+                "profile_pic": "9919191919",
+                "is_admin": false,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238622"
+            },
+            {
+                "username": "user_3",
+                "profile_pic": "9919191919",
+                "is_admin": false,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238623"
+            },
+            {
+                "username": "user_4",
+                "profile_pic": "9919191919",
+                "is_admin": false,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238624"
+            },
+            {
+                "username": "user_5",
+                "profile_pic": "9919191919",
+                "is_admin": false,
+                "password": "admin@123",
+                "profile_pic": "https://avatars1.githubusercontent.com/u/66238625"
+            }
+        ],
+        "states": [{
+                "name": "Started"
+            },
+            {
+                "name": "In Planning"
+            },
+            {
+                "name": "In Progress"
+            },
+            {
+                "name": "In Testing"
+            },
+            {
+                "name": "Deployed"
+            }
+        ],
+        "checklist": [{
+                "name": "Followed Standard Guidelines",
+                "is_required": true
+            },
+            {
+                "name": "Clean Code",
+                "is_required": false
+            },
+            {
+                "name": "Self Reviewed",
+                "is_required": false
+            },
+            {
+                "name": "Verified with RP",
+                "is_required": true
+            },
+            {
+                "name": "Some other Condition",
+                "is_required": false
+            }
+        ],
+        "transitions": [{
+                "name": "Transition_1",
+                "from_state_id": 1,
+                "to_state_id": 2,
+                "checklist": [1, 2, 3],
+                "description": "some string"
+            },
+            {
+                "name": "Transition_2",
+                "from_state_id": 2,
+                "to_state_id": 3,
+                "checklist": [1, 2, 3],
+                "description": "some string"
+            },
+            {
+                "name": "Transition_3",
+                "from_state_id": 3,
+                "to_state_id": 4,
+                "checklist": [1, 2, 3, 4],
+                "description": "some string"
+            },
+            {
+                "name": "Transition_4",
+                "from_state_id": 4,
+                "to_state_id": 2,
+                "checklist": [1, 3],
+                "description": "some string"
+            },
+            {
+                "name": "Transition_5",
+                "from_state_id": 2,
+                "to_state_id": 5,
+                "checklist": [1],
+                "description": "some string"
+            },
+            {
+                "name": "Transition_6",
+                "from_state_id": 4,
+                "to_state_id": 5,
+                "checklist": [1, 2, 3],
+                "description": "some string"
+            }
+        ],
+        "workflows": [{
+                "name": "StandUp Meeting WorkFlow",
+                "states": [1, 2, 3],
+                "transitions": [1, 2, 3]
+            },
+            {
+                "name": "Sequential Driven WorkFlow",
+                "states": [1, 2, 3, 4],
+                "transitions": [1, 2, 3, 4]
+            },
+            {
+                "name": "Request & Approval WorkFlow",
+                "states": [1, 2],
+                "transitions": [1, 2]
+            },
+            {
+                "name": "Process Workflow.",
+                "states": [1],
+                "transitions": [1]
+            },
+            {
+                "name": "Workflow_5",
+                "states": [1, 2, 3, 4, 5],
+                "transitions": [1, 2, 3, 4, 5]
+            }
+        ],
+        "projects": [{
+                "name": "Project_1",
+                "description": "some string",
+                "workflow_id": 1,
+                "project_type": "Classic Software",
+                "created_by_id": 1,
+                "developers": [1, 2, 3]
+            },
+            {
+                "name": "project_2",
+                "description": "some string",
+                "workflow_id": 2,
+                "project_type": "Financial",
+                "created_by_id": 2,
+                "developers": [1, 2, 3, 4]
+            },
+            {
+                "name": "project_3",
+                "description": "some string",
+                "workflow_id": 3,
+                "project_type": "Classic Software",
+                "created_by_id": 1,
+                "developers": [1, 2, 3]
+            },
+            {
+                "name": "project_4",
+                "description": "some string",
+                "workflow_id": 4,
+                "project_type": "CRM",
+                "created_by_id": 2,
+                "developers": [1, 2, 3, 5]
+            },
+            {
+                "name": "project_5",
+                "description": "some string",
+                "workflow_id": 5,
+                "project_type": "CRM",
+                "created_by_id": 1,
+                "developers": [3, 4, 5]
+            }
+        ],
+        "tasks": [{
+                "project_id": 1,
+                "issue_type": "Bug",
+                "title": "Issue_1",
+                "assignee_id": 3,
+                "description": "some string",
+                "state_id": 1,
+                "conditons_satisfied": []
+            },
+            {
+                "project_id": 2,
+                "issue_type": "Task",
+                "title": "Issue_2",
+                "assignee_id": 4,
+                "description": "some string",
+                "state_id": 1,
+                "conditons_satisfied": []
+            },
+            {
+                "project_id": 3,
+                "issue_type": "Bug",
+                "title": "Issue_3",
+                "assignee_id": 3,
+                "description": "some string",
+                "state_id": 2,
+                "conditons_satisfied": [1, 2, 3]
+            },
+            {
+                "project_id": 4,
+                "issue_type": "Task",
+                "title": "Issue_4",
+                "assignee_id": 3,
+                "description": "some string",
+                "state_id": 1,
+                "conditons_satisfied": []
+            },
+            {
+                "project_id": 5,
+                "issue_type": "Task",
+                "title": "Issue_5",
+                "assignee_id": 3,
+                "description": "some string",
+                "state_id": 3,
+                "conditons_satisfied": [1, 2, 3, 4]
+            }
+        ]
+    }
+}

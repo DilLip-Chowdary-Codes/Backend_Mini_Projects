@@ -18,7 +18,7 @@ from django_swagger_utils.drf_server.utils.general.import_app_settings import \
 
 THIRD_PARTY_APPS = []
 APPS = [
-    "food_management"
+    "project_management_portal"
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
@@ -61,7 +61,7 @@ SWAGGER_UTILS = {
         }
     },
     "APPS": {
-        "food_management":{}
+        "project_management_portal":{}
     },
     "HOST": os.environ.get('APIGATEWAY_ENDPOINT', '127.0.0.1:8000'),
 }
@@ -70,4 +70,4 @@ API_KEY_AUTHENTICATION_CLASS = \
     "ib_miniprojects_backend.common.authentication.APIKeyAuthentication"
 
 CUSTOM_EXCEPTIONS_TO_LOG_IN_SENTRY = []
-# AUTH_USER_MODEL = 'food_management.User'
+AUTH_USER_MODEL = 'project_management_portal.User'

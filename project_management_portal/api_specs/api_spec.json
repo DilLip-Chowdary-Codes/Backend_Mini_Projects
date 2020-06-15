@@ -1,0 +1,1114 @@
+{
+	"swagger": "2.0",
+	"host": "localhost",
+	"basePath": "/api/project_management_portal/",
+	"info": {
+		"version": "1.0",
+		"title": "Simple Project Management API",
+		"description": ""
+	},
+	"schemes": [
+		"https",
+		"http"
+	],
+	"consumes": [
+		"application/json"
+	],
+	"produces": [
+		"application/json"
+	],
+	"securityDefinitions": {
+		"oauth": {
+			"tokenUrl": "http://auth.ibtspl.com/oauth2/v1/",
+			"flow": "password",
+			"scopes": {
+				"read": "read users",
+				"write": "create users",
+				"update": "update users",
+				"delete": "delete users",
+				"superuser": "super user permission"
+			},
+			"type": "oauth2"
+		}
+	},
+	"definitions": {
+		"User": {
+			"type": "object",
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"profile_pic": {
+					"type": "string"
+				},
+				"phone_no": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"username",
+				"profile_pic",
+				"phone_no"
+			]
+		},
+		"UserDetails": {
+			"allOf": [{
+					"type": "object",
+					"properties": {
+						"user_id": {
+							"type": "integer"
+						}
+
+					},
+					"required": [
+						"user_id"
+					]
+				},
+				{
+					"$ref": "#/definitions/User"
+				}
+			]
+		},
+		"Project": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"workflow_id": {
+					"type": "integer"
+				},
+				"project_type": {
+					"type": "string",
+					"enum": [
+						"Classic Software",
+						"Financial",
+						"CRM"
+					]
+				},
+				"developers": {
+					"type": "array",
+					"items": {
+						"type": "integer"
+					}
+				}
+			},
+			"required": [
+				"name",
+				"workflow_id",
+				"project_type"
+			]
+		},
+		"TaskDetails": {
+			"type": "object",
+			"properties": {
+				"project": {
+					"$ref": "#/definitions/ProjectDetails"
+				},
+				"issue_type": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"assigned_to": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/User"
+					}
+				},
+				"description": {
+					"type": "string"
+				},
+				"state": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"project",
+				"issue_type",
+				"title",
+				"state"
+			]
+		},
+		"TasksDetails": {
+			"type": "object",
+			"properties": {
+				"task_id": {
+					"type": "integer"
+				},
+				"issue_type": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"assigned_to": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/User"
+					}
+				},
+				"description": {
+					"type": "string"
+				},
+				"state": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"issue_type",
+				"title",
+				"state"
+			]
+		},
+		"ProjectDetails": {
+			"type": "object",
+			"properties": {
+				"project_id": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"workflow_type": {
+					"type": "string",
+					"enum": [
+						"todo"
+					]
+				},
+				"project_type": {
+					"type": "string",
+					"enum": [
+						"Classic Software",
+						"Financial",
+						"CRM"
+					]
+				},
+				"created_by": {
+					"$ref": "#/definitions/User"
+				},
+				"created_at": {
+					"type": "string"
+				},
+				"developers": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/User"
+					}
+				}
+			},
+			"required": [
+				"name",
+				"workflow_type",
+				"project_type",
+				"created_by",
+				"created_at"
+			]
+		},
+		"Projects": {
+			"type": "object",
+			"properties": {
+				"total_projects": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"projects": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/ProjectDetails"
+
+					}
+				}
+			}
+		},
+		"State": {
+			"type": "object",
+			"properties": {
+				"state": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"state"
+			]
+		},
+		"Transition": {
+			"type": "object",
+			"properties": {
+				"from_state": {
+					"type": "string"
+				},
+				"to_state": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"from_state",
+				"to_state",
+				"name"
+			]
+		},
+		"WorkFlow": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string"
+				},
+				"states": {
+					"type": "array",
+					"items": {
+						"type": "integer"
+					}
+				},
+				"transitions": {
+					"type": "array",
+					"items": {
+						"type": "integer"
+					}
+				}
+			},
+			"required": [
+				"type",
+				"states"
+			]
+		},
+		"WorkFlowDetails": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string"
+				},
+				"states": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/State"
+					}
+				},
+				"transitions": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Transition"
+					}
+				}
+			},
+			"required": [
+				"type",
+				"states"
+			]
+		},
+		"Workflows": {
+			"type": "object",
+			"properties": {
+
+				"workflow_id": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"name": {
+					"type": "string"
+
+				}
+			}
+		},
+		"TaskStates": {
+			"type": "object",
+			"properties": {
+				"state_id": {
+					"type": "integer"
+				},
+				"name": {
+					"type": "string"
+				}
+			}
+		},
+		"Checklist": {
+			"type": "object",
+			"properties": {
+				"checklist_id": {
+					"type": "integer"
+				},
+				"name": {
+					"type": "string"
+				},
+				"is_required": {
+					"type": "boolean",
+					"default": true
+				}
+			}
+		},
+		"ChecklistStatus": {
+			"type": "object",
+			"properties": {
+				"checklist_id": {
+					"type": "integer"
+				},
+				"is_checked": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"required": [
+				"checklist_id",
+				"is_checked"
+			]
+		}
+	},
+	"parameters": {
+		"AccessTokenParameter": {
+			"name": "OAuthToken",
+			"description": "OAuth Token to Authentication",
+			"in": "header",
+			"type": "string"
+		},
+		"LimitParameter": {
+			"name": "limit",
+			"description": "Requested query parameter to limit fetched data",
+			"in": "query",
+			"type": "integer",
+			"default": 100,
+			"format": "int64"
+		},
+		"OffsetParameter": {
+			"name": "offset",
+			"description": "Requested query parameter to limit fetched data",
+			"in": "query",
+			"default": 0,
+			"type": "integer",
+			"format": "int64"
+		},
+		"SortByParameter": {
+			"name": "sort_by",
+			"description": "Requested query parameter to limit fetched data",
+			"in": "query",
+			"type": "boolean",
+			"default": false
+		},
+		"ProjectIdParameter": {
+			"name": "project_id",
+			"description": "Requested id of project",
+			"in": "path",
+			"type": "integer",
+			"required": true
+		},
+		"TaskIdParameter": {
+			"name": "task_id",
+			"description": "Requested id of project",
+			"in": "path",
+			"type": "integer",
+			"required": true
+		},
+		"LoginParameters": {
+			"name": "Login",
+			"description": "Data requested to login",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				]
+			}
+		},
+		"CreateProjectParameters": {
+			"name": "Project",
+			"description": "Requested data for creating project",
+			"in": "body",
+			"schema": {
+				"$ref": "#/definitions/Project"
+			}
+		},
+		"CreateTaskParameters": {
+			"name": "Task",
+			"description": "Requested data for creating task",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"issue_type": {
+						"type": "string",
+						"enum": [
+							"Task",
+							"Bug",
+							"User Story",
+							"Developer Story",
+							"Enhancement"
+						]
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"state_id": {
+						"type": "integer"
+					}
+				},
+				"required": [
+					"issue_type",
+					"title",
+					"state_id"
+				]
+			}
+		},
+		"TaskFilterParameter": {
+			"name": "filter_by",
+			"description": "filter results by task",
+			"in": "query",
+			"type": "boolean",
+			"default": false
+		},
+		"GetTransitionDetailsParameters": {
+			"name": "Transition",
+			"description": "create transition for task",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"to_state_id": {
+						"type": "integer"
+					}
+				},
+				"required": [
+					"to_state_id"
+				]
+			}
+		},
+		"UpdateTaskStateParameters": {
+			"name": "UpdateTaskStatus",
+			"description": "update task status",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"to_state_id": {
+						"type": "integer"
+					},
+					"checklist": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/ChecklistStatus"
+						}
+					}
+				},
+				"required": [
+					"to_state_id"
+				]
+			}
+		},
+		"CreateStateParameters": {
+			"name": "state",
+			"description": "add new state ",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"state": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"CreateWorkFlowParameters": {
+			"name": "workflow",
+			"description": "create new workflow ",
+			"in": "body",
+			"schema": {
+				"$ref": "#/definitions/WorkFlow"
+			}
+		}
+	},
+	"responses": {
+		"AccessForbiddenResponse": {
+			"description": "Data Access Forbidden"
+		},
+		"InvalidDataResponse": {
+			"description": "Invalid data Provided"
+		},
+		"UnauthorizedResponse": {
+
+			"description": "Unauthorized Access"
+		},
+		"LoginResponse": {
+			"description": "User Login Succesful",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"user_id": {
+						"type": "integer"
+					},
+					"username": {
+						"type": "string"
+					},
+					"profile_pic": {
+						"type": "string"
+					},
+					"is_admin": {
+						"type": "boolean"
+					},
+					"access_token": {
+						"type": "string"
+					},
+					"refresh_token": {
+						"type": "string"
+					},
+					"expires_in": {
+						"type": "integer",
+						"format": "int64"
+					}
+				},
+				"required": [
+					"user_id",
+					"username",
+					"profile_pic",
+					"access_token",
+					"refresh_token",
+					"expires_in",
+					"is_admin"
+				]
+			}
+		},
+		"UserNotFoundResponse": {
+			"description": "User not registered"
+		},
+		"LogoutResponse": {
+			"description": "Logout Succesful"
+		},
+		"CreateProjectResponse": {
+			"description": "Project created Succesfully",
+			"schema": {
+				"allOf": [{
+					"$ref": "#/definitions/ProjectDetails"
+				}]
+			}
+		},
+		"GetProjectsResponse": {
+			"description": "Succesfully fetched Projects",
+			"schema": {
+				"$ref": "#/definitions/Projects"
+			}
+		},
+		"CreateTaskResponse": {
+			"description": "Task Created Succesfully",
+			"schema": {
+				"allOf": [{
+					"$ref": "#/definitions/TaskDetails"
+				}]
+			}
+
+		},
+		"ProjectNotFoundResponse": {
+			"description": "Project Not Available"
+		},
+		"GetTasksResponse": {
+			"description": "Tasks Fetched Succesfully",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_tasks": {
+						"type": "integer"
+					},
+					"project": {
+						"$ref": "#/definitions/ProjectDetails"
+					},
+					"tasks": {
+						"type": "array",
+						"items": {
+
+							"$ref": "#/definitions/TasksDetails"
+						}
+					}
+				}
+			}
+		},
+		"GetStatesResponse": {
+			"description": "States fetched succesfully",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_states": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"states": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/State"
+
+						}
+					}
+				}
+			}
+		},
+		"CreateTransitionResponse": {
+			"description": "Transition added Succesfully",
+			"schema": {
+				"allOf": [{
+					"$ref": "#/definitions/Transition"
+				}]
+			}
+		},
+		"CreateWorkFlowResponse": {
+			"description": "Create Work flow response",
+			"schema": {
+				"$ref": "#/definitions/WorkFlowDetails"
+			}
+		},
+		"GetWorkFlowsResponse": {
+			"description": "Get Work flows ",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_workflows": {
+						"type": "integer"
+					},
+					"workflows": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/Workflows"
+						}
+					}
+				}
+
+			}
+
+		},
+		"GetTaskStatesResponse": {
+			"description": "Get states based on task current state API",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_states": {
+						"type": "integer"
+					},
+					"states": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/TaskStates"
+
+						}
+					}
+				}
+			}
+		},
+		"GetTransitionDetailsResponse": {
+			"description": "Transition details between two states",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"task_id": {
+						"type": "integer"
+					},
+					"from_state": {
+						"$ref": "#/definitions/TaskStates"
+					},
+					"to_state": {
+						"$ref": "#/definitions/TaskStates"
+					},
+					"checklist": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/Checklist"
+						}
+					}
+
+				},
+				"required": [
+					"from_state",
+					"to_state",
+					"checklist"
+				]
+			}
+		}
+	},
+	"paths": {
+		"/user/login/v1/": {
+			"post": {
+				"operationId": "user_login",
+				"summary": "Login API",
+				"parameters": [{
+					"$ref": "#/parameters/LoginParameters"
+				}],
+				"responses": {
+					"404": {
+						"$ref": "#/responses/UserNotFoundResponse"
+					},
+					"401": {
+						"description": "Invalid Password Entered"
+					},
+					"200": {
+						"$ref": "#/responses/LoginResponse"
+					}
+				}
+			}
+		},
+		"/user/logout/v1/": {
+			"delete": {
+				"operationId": "logout",
+				"summary": "Logout API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+					"$ref": "#/parameters/AccessTokenParameter"
+				}],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/LogoutResponse"
+					},
+					"401": {
+						"$ref": "#/responses/UnauthorizedResponse"
+					}
+				}
+			}
+		},
+		"/users/v1/": {
+			"get": {
+				"operationId": "get_users",
+				"summary": "Get Users API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write",
+						"superuser"
+					]
+				}],
+				"parameters": [{
+					"$ref": "#/parameters/AccessTokenParameter"
+				}],
+				"responses": {
+					"200": {
+						"description": "Users Fetched Succesfully"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			}
+		},
+		"/projects/v1/": {
+			"post": {
+				"operationId": "create_project",
+				"summary": "Create Project API",
+				"security": [{
+					"oauth": [
+						"superuser"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/CreateProjectParameters"
+					},
+					{
+						"$ref": "#/parameters/AccessTokenParameter"
+					}
+				],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/CreateProjectResponse"
+					},
+					"400": {
+						"$ref": "#/responses/InvalidDataResponse"
+					},
+					"401": {
+						"$ref": "#/responses/UnauthorizedResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			},
+			"get": {
+				"operationId": "get_projects",
+				"summary": "Get Projects API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/AccessTokenParameter"
+					},
+					{
+						"$ref": "#/parameters/LimitParameter"
+					},
+					{
+						"$ref": "#/parameters/OffsetParameter"
+					},
+					{
+						"$ref": "#/parameters/SortByParameter"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/GetProjectsResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			}
+		},
+		"/projects/{project_id}/tasks/v1/": {
+			"post": {
+				"operationId": "create_task",
+				"summary": "Create a task in Project API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/CreateTaskParameters"
+					},
+					{
+						"$ref": "#/parameters/AccessTokenParameter"
+					},
+					{
+						"$ref": "#/parameters/ProjectIdParameter"
+					}
+				],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/CreateTaskResponse"
+					},
+					"400": {
+						"$ref": "#/responses/InvalidDataResponse"
+					},
+					"404": {
+						"$ref": "#/responses/ProjectNotFoundResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			},
+			"get": {
+				"operationId": "get_tasks",
+				"summary": "Get Tasks List for Project API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/AccessTokenParameter"
+					},
+					{
+						"$ref": "#/parameters/ProjectIdParameter"
+					},
+					{
+						"$ref": "#/parameters/TaskFilterParameter"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/GetTasksResponse"
+					},
+					"404": {
+						"$ref": "#/responses/ProjectNotFoundResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			}
+		},
+		"/workflows/v1/": {
+			"post": {
+				"operationId": "create_workflow",
+				"summary": "Create Workflow API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write",
+						"superuser"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/AccessTokenParameter"
+					},
+					{
+						"$ref": "#/parameters/ProjectIdParameter"
+					},
+					{
+						"$ref": "#/parameters/CreateWorkFlowParameters"
+					}
+				],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/CreateWorkFlowResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			},
+			"get": {
+
+				"operationId": "get_workflows",
+				"summary": "Get list of Workflows API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write",
+						"superuser"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/AccessTokenParameter"
+					},
+					{
+						"$ref": "#/parameters/ProjectIdParameter"
+					}
+				],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/GetWorkFlowsResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					},
+					"404": {
+						"$ref": "#/responses/ProjectNotFoundResponse"
+					}
+				}
+			}
+		},
+		"/projects/{project_id}/tasks/{task_id}/state/update/v1/": {
+			"put": {
+				"operationId": "update_task_state",
+				"summary": "Transition a Task / Update Task State API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/ProjectIdParameter"
+					},
+					{
+						"$ref": "#/parameters/TaskIdParameter"
+					},
+					{
+						"$ref": "#/parameters/UpdateTaskStateParameters"
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "State Updated Succesfully"
+					},
+					"404": {
+						"description": "Project or Task not found"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+				}
+			}
+		},
+		"/projects/{project_id}/tasks/{task_id}/states/v1/": {
+			"get": {
+				"operationId": "get_task_states",
+				"summary": "Get states based on task current state API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/ProjectIdParameter"
+					},
+					{
+						"$ref": "#/parameters/TaskIdParameter"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/GetTaskStatesResponse"
+					},
+					"404": {
+						"description": "Project or Task not found"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					}
+
+				}
+			}
+		},
+		"/projects/{project_id}/tasks/{task_id}/transition/details/v1/": {
+			"post": {
+				"operationId": "get_task_transition_details",
+				"summary": "Get Transition details between two states API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/ProjectIdParameter"
+					},
+					{
+						"$ref": "#/parameters/TaskIdParameter"
+					},
+					{
+						"$ref": "#/parameters/GetTransitionDetailsParameters"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/GetTransitionDetailsResponse"
+					},
+					"403": {
+						"$ref": "#/responses/AccessForbiddenResponse"
+					},
+					"404": {
+						"description": "Project or Task not Found"
+					}
+				}
+			}
+		},
+		"/check/v1": {
+			"get": {
+				"operationId": "check_connect",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		}
+	}
+}
