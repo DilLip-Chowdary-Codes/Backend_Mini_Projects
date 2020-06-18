@@ -89,7 +89,6 @@ class GetPosts:
 
     def _validate_post_ids(self, post_ids):
         valid_post_ids = self.storage.get_valid_post_ids(post_ids)
-
         invalid_post_ids = [
             post_id
             for post_id in post_ids if post_id not in valid_post_ids
