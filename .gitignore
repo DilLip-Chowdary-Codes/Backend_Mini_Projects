@@ -51,7 +51,7 @@ venv
 
 #Temp
 get_domain_with_posts.py
-get_posts_details.py
+
 
 test_get_post_details.py
 post_presenter_interface.py
