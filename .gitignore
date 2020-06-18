@@ -48,13 +48,3 @@ dist/
 doc_html/
 
 venv
-
-#Temp
-get_domain_with_posts.py
-
-
-test_get_post_details.py
-post_presenter_interface.py
-post_storage_interface.py
-
-.gitignore

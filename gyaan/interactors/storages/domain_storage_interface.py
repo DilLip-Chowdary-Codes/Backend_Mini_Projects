@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class StorageInterface(ABC):
+class DomainStorageInterface(ABC):
 
     @abstractmethod
     def get_domain(self, domain_id):
@@ -24,4 +24,12 @@ class StorageInterface(ABC):
     
     @abstractmethod
     def is_user_domain_expert(self, user_id, domain_id):
+        pass
+    
+    @abstractmethod
+    def validate_domain_id(self, domain_id):
+        pass
+
+    @abstractmethod
+    def get_domain_post_ids(self, domain_id):
         pass
