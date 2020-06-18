@@ -1,8 +1,9 @@
 import pytest
 from unittest.mock import Mock, create_autospec
-from gyaan.interactors.storages.domain_storage_interface import StorageInterface
+from gyaan.interactors.storages.domain_storage_interface\
+    import DomainStorageInterface
 from gyaan.interactors.presenters.domain_presenter_interface\
-    import PresenterInterface
+    import DomainPresenterInterface
 from gyaan.interactors.get_domain_details import GetDomainDetailsInteractor
 from gyaan.exceptions import InvalidDomainId, UserNotFollowingDomain
 from django_swagger_utils.drf_server.exceptions import BadRequest
@@ -13,8 +14,8 @@ class TestGetDomainDetails:
         #arrange
         user_id = 1
         domain_id = 1
-        storage = create_autospec(StorageInterface)
-        presenter = create_autospec(PresenterInterface)
+        storage = create_autospec(DomainStorageInterface)
+        presenter = create_autospec(DomainPresenterInterface)
         interactor = GetDomainDetailsInteractor(storage)
         storage.get_domain.side_effect = InvalidDomainId
         presenter.raise_invalid_domain_id_exception.side_effect = BadRequest
@@ -31,8 +32,8 @@ class TestGetDomainDetails:
         #arrange
         user_id = 1
         domain_id = 1
-        storage = create_autospec(StorageInterface)
-        presenter = create_autospec(PresenterInterface)
+        storage = create_autospec(DomainStorageInterface)
+        presenter = create_autospec(DomainPresenterInterface)
         interactor = GetDomainDetailsInteractor(storage)
         storage.get_domain.return_value = domain_dto
         storage.is_user_following_domain.return_value = False
@@ -61,8 +62,8 @@ class TestGetDomainDetails:
         domain_stats = domain_details_dto.domain_stats
         domain_experts = domain_details_dto.domain_experts
         is_user_domain_expert = False
-        storage = create_autospec(StorageInterface)
-        presenter = create_autospec(PresenterInterface)
+        storage = create_autospec(DomainStorageInterface)
+        presenter = create_autospec(DomainPresenterInterface)
         interactor = GetDomainDetailsInteractor(storage)
         storage.get_domain.return_value = domain_dto
         storage.is_user_following_domain.return_value = True

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 from gyaan.interactors.storages.dtos import DomainDTO, DomainStatsDTO, \
-    UserDetailsDTO
+    UserDetailsDTO, CompletePostDetails
 
 @dataclass
 class DomainDetailsDTO:
@@ -12,3 +12,8 @@ class DomainDetailsDTO:
     # requested_users: List[UserDetailsDTO]
     # user_id: int
     is_user_domain_expert: bool
+
+@dataclass
+class DomainDetailsWithPosts:
+    post_details: CompletePostDetails
+    domain_details: DomainDetailsDTO

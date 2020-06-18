@@ -1,16 +1,17 @@
-from gyaan.interactors.storages.domain_storage_interface import StorageInterface
+from gyaan.interactors.storages.domain_storage_interface\
+    import DomainStorageInterface
 from gyaan.interactors.presenters.domain_presenter_interface\
-    import PresenterInterface
+    import DomainPresenterInterface
 from gyaan.exceptions import InvalidDomainId, UserNotFollowingDomain
 from gyaan.interactors.dtos import DomainDetailsDTO
 
 class GetDomainDetailsInteractor:
 
-    def __init__(self, storage: StorageInterface):
+    def __init__(self, storage: DomainStorageInterface):
         self.storage = storage
 
     def get_domain_details_wrapper(self, user_id: int, domain_id: int,
-                                   presenter: PresenterInterface):
+                                   presenter: DomainPresenterInterface):
         try:
             domain_details_dto = self.get_domain_details(user_id, domain_id)
 

@@ -32,15 +32,16 @@ class TestGetPostDetails:
     
     def test_get_post_details_with_valid_values(self,
                                                 post_dtos,
+                                                user_dtos,
                                                 comment_dtos,
                                                 posts_tag_details,
                                                 post_reaction_counts,
-                                                comment_reaction_counts,
+                                                all_post_details_dto,
                                                 posts_comment_counts,
-                                                comment_replies_counts,
-                                                user_dtos,
                                                 posts_details_response,
-                                                all_post_details_dto):
+                                                comment_replies_counts,
+                                                comment_reaction_counts
+                                                ):
         #arrange
         post_ids = [1, 2, 3]
         valid_post_ids = [1, 2, 3]

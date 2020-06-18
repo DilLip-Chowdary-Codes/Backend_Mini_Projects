@@ -1,5 +1,7 @@
 from gyaan.interactors.storages.post_storage_interface\
     import PostStorageInterface
+from gyaan.interactors.storages.domain_storage_interface\
+    import DomainStorageInterface
 from gyaan.interactors.presenters.post_presenter_interface\
     import PostPresenterInterface
 from gyaan.exceptions import InvalidPostIdsException
@@ -7,8 +9,8 @@ from gyaan.interactors.storages.dtos import CompletePostDetails
 
 class GetPostsDetailsInteractor:
 
-    def __init__(self, storage):
-        self.storage = storage
+    def __init__(self, post_storage):
+        self.post_storage = post_storage
 
     def get_posts_details_wrapper(self, post_ids, presenter):
         try:
@@ -21,22 +23,22 @@ class GetPostsDetailsInteractor:
 
     def get_posts_details(self, post_ids):
 
-        valid_post_ids = self.storage.get_valid_post_ids(post_ids)
+        valid_post_ids = self.post_storage.get_valid_post_ids(post_ids)
         invalid_post_ids = list(set(post_ids) - set(valid_post_ids))
 
         if invalid_post_ids:
             raise InvalidPostIdsException(invalid_post_ids)
 
-        post_dtos = self.storage.get_posts(post_ids)
-        latest_comment_ids = self.storage.get_comment_ids(post_ids, limit=2)
-        comment_dtos = self.storage.get_comments(latest_comment_ids)
-        posts_tag_details = self.storage.get_post_tags(post_ids=post_ids)
-        posts_comment_counts = self.storage.get_comments_count(post_ids)
-        comment_replies_counts = self.storage.get_replies_count(
+        post_dtos = self.post_storage.get_posts(post_ids)
+        latest_comment_ids = self.post_storage.get_comment_ids(post_ids, limit=2)
+        comment_dtos = self.post_storage.get_comments(latest_comment_ids)
+        posts_tag_details = self.post_storage.get_post_tags(post_ids=post_ids)
+        posts_comment_counts = self.post_storage.get_comments_count(post_ids)
+        comment_replies_counts = self.post_storage.get_replies_count(
             latest_comment_ids)
-        post_reaction_counts = self.storage.get_posts_reactions_count(
+        post_reaction_counts = self.post_storage.get_posts_reactions_count(
             post_ids)
-        comment_reaction_counts = self.storage.get_comments_reactions_count(
+        comment_reaction_counts = self.post_storage.get_comments_reactions_count(
             latest_comment_ids)
         user_ids = [post_dto.posted_by_id for post_dto in post_dtos]
         user_ids += [
@@ -44,7 +46,7 @@ class GetPostsDetailsInteractor:
             for comment_dto in comment_dtos
             ]
         user_ids = list(set(user_ids))
-        user_dtos = self.storage.get_users(user_ids)
+        user_dtos = self.post_storage.get_users(user_ids)
 
         all_post_details_dto = CompletePostDetails(
             post_dtos=post_dtos,
