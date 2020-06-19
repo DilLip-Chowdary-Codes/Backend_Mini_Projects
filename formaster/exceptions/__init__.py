@@ -1,2 +1,11 @@
-from .exceptions import InvalidFormId, FormClosed
-__all__ = ["InvalidFormId", FormClosed]
+from .exceptions\
+    import InvalidFormId,\
+           FormClosed,\
+           InvalidQuestionId,\
+           InvalidUserResponse
+
+__all__ = ["InvalidFormId",
+           "FormClosed",
+           "InvalidQuestionId",
+           "InvalidUserResponse"
+          ]

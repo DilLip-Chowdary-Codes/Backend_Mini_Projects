@@ -3,3 +3,9 @@ class InvalidFormId(Exception):
 
 class FormClosed(Exception):
     pass
+
+class InvalidQuestionId(Exception):
+    pass
+
+class InvalidUserResponse(Exception):
+    pass
