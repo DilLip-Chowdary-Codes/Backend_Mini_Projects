@@ -32,7 +32,7 @@ class UserPresenterImplementation(UserPresenterInterface):
             "is_admin": userdto.is_admin,
             "access_token": oauth_token_dto.access_token,
             "refresh_token": oauth_token_dto.refresh_token,
-            "expires_in": str(oauth_token_dto.expires_in)
+            "expires_in": oauth_token_dto.expires_in
         }
 
         return login_response

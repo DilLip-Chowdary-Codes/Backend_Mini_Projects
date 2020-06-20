@@ -29,15 +29,15 @@ def api_wrapper(*args, **kwargs):
     project_presenter = ProjectPresenterImplementation()
     interactor = GetTasksInteractor(
         project_storage=project_storage,
-        task_storage=task_storage,
-        project_presenter=project_presenter,
-        task_presenter=task_presenter
+        task_storage=task_storage
         )
 
     user_id = user.user_id
-    tasks_details = interactor.get_tasks(
+    tasks_details = interactor.get_tasks_wrapper(
         user_id=user_id,
-        project_id=project_id
+        project_id=project_id,
+        project_presenter=project_presenter,
+        task_presenter=task_presenter
         )
 
     response_data = json.dumps(tasks_details)

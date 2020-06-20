@@ -13,10 +13,10 @@ login_response = {
   "user_id":1,
   "username": "username_1",
   "profile_pic": "http://www.google.com",
+  "is_admin": True,
   "access_token":"kjfewrfjbwg",
   "refresh_token":"sjdfbkgfsdg",
-  "expires_in": 1000000,
-  "is_admin": True
+  "expires_in": 1000000
         }
 
 get_project_response = {

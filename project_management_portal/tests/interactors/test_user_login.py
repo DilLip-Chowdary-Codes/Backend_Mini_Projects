@@ -31,7 +31,6 @@ class TestUserLogin:
         oauth_storage = create_autospec(OAuth2SQLStorage)
         interactor = UserLoginInteractor(
             storage=storage,
-            presenter=presenter,
             oauth_storage=oauth_storage
             )
         storage.validate_username.return_value = False
@@ -40,7 +39,9 @@ class TestUserLogin:
 
         #act
         with pytest.raises(InvalidUsername):
-            interactor.login(username=username, password=password)
+            interactor.login_wrapper(username=username, password=password,
+                                     presenter=presenter
+                                    )
 
         #assert
         storage.validate_username.assert_called_once_with(username=username)
@@ -56,7 +57,6 @@ class TestUserLogin:
         oauth_storage = create_autospec(OAuth2SQLStorage)
         interactor = UserLoginInteractor(
             storage=storage,
-            presenter=presenter,
             oauth_storage=oauth_storage
             )
         storage.validate_username.return_value = True
@@ -66,7 +66,9 @@ class TestUserLogin:
 
         #act
         with pytest.raises(InvalidPassword):
-            interactor.login(username=username, password=password)
+            interactor.login_wrapper(username=username, password=password,
+                             presenter=presenter
+                            )
 
         #assert
         storage.validate_username.assert_called_once_with(username=username)
@@ -89,7 +91,6 @@ class TestUserLogin:
         oauth_storage = create_autospec(OAuth2SQLStorage)
         interactor = UserLoginInteractor(
             storage=storage,
-            presenter=presenter,
             oauth_storage=oauth_storage
             )
         access_token_dto = UserAuthTokensDTO(user_id=1,
@@ -105,7 +106,11 @@ class TestUserLogin:
                           "create_user_auth_tokens",
                           return_value=access_token_dto):
 
-            response = interactor.login(username=username, password=password)
+            response = interactor.login_wrapper(
+                    username=username,
+                    password=password,
+                    presenter=presenter
+                    )
 
         #assert
         storage.validate_username.assert_called_once_with(username=username)

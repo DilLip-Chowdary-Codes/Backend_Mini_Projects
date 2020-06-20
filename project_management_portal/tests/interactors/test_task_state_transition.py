@@ -48,9 +48,7 @@ class TestTaskTransition:
 
         interactor = TaskStateTransitionInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = project_dto
         task_storage.validate_task_id.return_value = task_dto
@@ -63,8 +61,10 @@ class TestTaskTransition:
             = updated_task_details_response
 
         #act
-        response = interactor.update_task_state(
-            update_task_state_input_data)
+        response = interactor.update_task_state_wrapper(
+            update_task_state_input_data,
+            project_presenter,
+            task_presenter)
 
         #assert
         assert response == updated_task_details_response
@@ -97,9 +97,7 @@ class TestTaskTransition:
 
         interactor = TaskStateTransitionInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = False
         project_presenter.raise_invalid_project_id_exception\
@@ -109,7 +107,9 @@ class TestTaskTransition:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.update_task_state(update_task_state_input_data)
+            interactor.update_task_state_wrapper(update_task_state_input_data,
+                                                 project_presenter,
+                                                 task_presenter)
 
         #assert
         assert error.value.message == expected_error_message
@@ -134,9 +134,7 @@ class TestTaskTransition:
 
         interactor = TaskStateTransitionInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = project_dto
         task_storage.validate_task_id.return_value = False
@@ -146,7 +144,9 @@ class TestTaskTransition:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.update_task_state(update_task_state_input_data)
+            interactor.update_task_state_wrapper(update_task_state_input_data,
+                                                 project_presenter,
+                                                 task_presenter)
 
         #assert
         assert error.value.message == expected_err_message
@@ -173,9 +173,7 @@ class TestTaskTransition:
 
         interactor = TaskStateTransitionInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = project_dto
         task_storage.validate_task_id.return_value = task_dto
@@ -187,7 +185,9 @@ class TestTaskTransition:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.update_task_state(update_task_state_input_data)
+            interactor.update_task_state_wrapper(update_task_state_input_data,
+                                                 project_presenter,
+                                                 task_presenter)
 
         #assert
         assert error.value.message == expected_error_message
@@ -228,9 +228,7 @@ class TestTaskTransition:
 
         interactor = TaskStateTransitionInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = project_dto
         task_storage.validate_task_id.return_value = task_dto
@@ -244,7 +242,9 @@ class TestTaskTransition:
 
         #act
         with pytest.raises(BadRequest) as error:
-            interactor.update_task_state(update_task_state_input_data)
+            interactor.update_task_state_wrapper(update_task_state_input_data,
+                                                 project_presenter,
+                                                 task_presenter)
 
         #assert
         assert error.value.message == expected_error_message

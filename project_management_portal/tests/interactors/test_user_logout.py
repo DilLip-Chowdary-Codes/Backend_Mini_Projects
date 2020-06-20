@@ -18,15 +18,15 @@ class TestLogout:
         access_token = "kjfewrfjbwg"
         storage = create_autospec(UserStorageInterface)
         presenter = create_autospec(UserPresenterInterface)
-        interactor = UserLogoutInteractor(
-            storage=storage,
-            presenter=presenter)
+        interactor = UserLogoutInteractor(storage=storage)
         storage.validate_access_token.return_value = True
         presenter.logout_response.return_value = None
         expected_response = None
 
         #act
-        response = interactor.logout(access_token=access_token)
+        response = interactor.logout_wrapper(access_token=access_token,
+                                             presenter=presenter
+                                            )
 
         #assert
         storage.validate_access_token.assert_called_once_with(
@@ -40,16 +40,16 @@ class TestLogout:
         access_token = "some_random"
         storage = create_autospec(UserStorageInterface)
         presenter = create_autospec(UserPresenterInterface)
-        interactor = UserLogoutInteractor(
-            storage=storage,
-            presenter=presenter)
+        interactor = UserLogoutInteractor(storage=storage)
         storage.validate_access_token.return_value = False
         presenter.raise_invalid_access_token_exception\
             .side_effect = InvalidToken
 
         #act
         with pytest.raises(InvalidToken):
-            interactor.logout(access_token=access_token)
+            interactor.logout_wrapper(access_token=access_token,
+                                      presenter=presenter
+                                     )
 
         #assert
         storage.validate_access_token.assert_called_once_with(

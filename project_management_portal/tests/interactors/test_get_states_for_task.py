@@ -38,9 +38,7 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         interactor = GetStatesForTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage)
         project_storage\
             .validate_developer_for_project.return_value = True
         project_storage.validate_project_id.return_value = project_dto
@@ -52,8 +50,10 @@ class TestGetStatesForTaskBasesOnCurrentState:
             .return_value = get_states_response
 
         #act
-        response = interactor.get_states_for_task_based_on_current_state(
-            task_state_data)
+        response = interactor.get_states_for_task_based_on_current_state_wrapper(
+            task_state_data,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter)
 
         #assert
         assert response == get_states_response
@@ -91,9 +91,8 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         interactor = GetStatesForTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage
+            )
         project_storage\
             .validate_developer_for_project.return_value = False
         project_presenter.raise_unauthorized_developer_exception\
@@ -102,8 +101,10 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_states_for_task_based_on_current_state(
-            task_state_data)
+            interactor.get_states_for_task_based_on_current_state_wrapper(
+            task_state_data,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter)
 
         #assert
         assert str(error.value) == expected_error_msg
@@ -133,9 +134,8 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         interactor = GetStatesForTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage
+            )
         project_storage\
             .validate_developer_for_project.return_value = True
         project_storage.validate_project_id.return_value = None
@@ -145,8 +145,10 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_states_for_task_based_on_current_state(
-                task_state_data)
+            interactor.get_states_for_task_based_on_current_state_wrapper(
+                task_state_data,
+                project_presenter=project_presenter,
+                task_presenter=task_presenter)
 
         #assert
         assert str(error.value) == expected_error_msg
@@ -179,9 +181,8 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         interactor = GetStatesForTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage
+            )
         project_storage\
             .validate_developer_for_project.return_value = True
         project_storage.validate_project_id.return_value = project_dto
@@ -192,8 +193,10 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_states_for_task_based_on_current_state(
-                task_state_data)
+            interactor.get_states_for_task_based_on_current_state_wrapper(
+                task_state_data,
+                project_presenter=project_presenter,
+                task_presenter=task_presenter)
 
         #assert
         assert str(error.value) == expected_error_msg

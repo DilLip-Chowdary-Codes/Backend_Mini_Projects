@@ -7,16 +7,25 @@ class GetWorkflowsInteractor:
 
     def __init__(
         self,
-        workflow_storage: WorkflowStorageInterface,
-        workflow_presenter: WorkflowPresenterInterface):
+        workflow_storage: WorkflowStorageInterface):
 
         self.workflow_storage = workflow_storage
-        self.workflow_presenter = workflow_presenter
+
+    def get_workflows_wrapper(self,
+                              workflow_presenter: WorkflowPresenterInterface):
+
+        try:
+            workflow_dtos = self.get_workflows()
+
+        except:
+            pass
+
+        workflows_dict = workflow_presenter.get_workflows_response(
+            workflow_dtos)
+
+        return workflows_dict
 
     def get_workflows(self):
 
         workflow_dtos = self.workflow_storage.get_workflows()
-        workflows_dict = self.workflow_presenter.get_workflows_response(
-            workflow_dtos)
-
-        return workflows_dict
+        return workflow_dtos

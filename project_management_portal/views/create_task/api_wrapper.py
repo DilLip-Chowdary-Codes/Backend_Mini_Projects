@@ -29,10 +29,9 @@ def api_wrapper(*args, **kwargs):
     project_presenter = ProjectPresenterImplementation()
     interactor = CreateTaskInteractor(
         project_storage=project_storage,
-        task_storage=task_storage,
-        project_presenter=project_presenter,
-        task_presenter=task_presenter
+        task_storage=task_storage
         )
+
     print("*"*100,"\n"*5,request_data['state_id'],"\n"*10)
     project_id = kwargs['project_id']
     user_id = user.user_id
@@ -44,9 +43,11 @@ def api_wrapper(*args, **kwargs):
         "state_id": request_data['state_id']
     }
 
-    task_details = interactor.create_task(
+    task_details = interactor.create_task_wrapper(
         user_id=user_id,
-        task_data=task_data
+        task_data=task_data,
+        project_presenter=project_presenter,
+        task_presenter=task_presenter
         )
 
     response_data = json.dumps(task_details)

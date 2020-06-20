@@ -4,27 +4,36 @@ from project_management_portal.interactors.storages.project_storage_interface\
 from project_management_portal.interactors.presenters\
     .project_presenter_interface import ProjectPresenterInterface
 from project_management_portal.dtos import ProjectDto
+from project_management_portal.exceptions import InvalidWorkFlow
 
 class CreateProjectInteractor:
     def __init__(self,
-                 storage: ProjectStorageInterface,
-                 presenter: ProjectPresenterInterface
+                 storage: ProjectStorageInterface
                 ):
         self.storage = storage
-        self.presenter = presenter
+    
+    def create_project_wrapper(self, user_id: int, project_data: Dict,
+                               presenter: ProjectPresenterInterface):
+
+        try:
+            project_details_dto = self.create_project(user_id, project_data)
+
+        except InvalidWorkFlow:
+            presenter.raise_invalid_workflow_id_exception()
+
+        response = presenter.get_project_details_response(
+            project_details_dto)
+
+        return response
 
     def create_project(self, user_id: int, project_data: Dict):
-
-        is_developers_empty = project_data['developers'] is None
-        if is_developers_empty:
-            project_data['developers'] = []
 
         workflow_id = project_data['workflow_id']
         is_workflow_invalid = not self.storage.validate_workflow_id(
             workflow_id=workflow_id)
 
         if is_workflow_invalid:
-            self.presenter.raise_invalid_workflow_id_exception()
+            raise InvalidWorkFlow()
 
         project_dto = self._convert_project_data_to_dto(project_data)
 
@@ -32,10 +41,7 @@ class CreateProjectInteractor:
             user_id=user_id,
             project_dto=project_dto
             )
-        response = self.presenter.get_project_details_response(
-            project_details_dto)
-
-        return response
+        return project_details_dto
 
     @staticmethod
     def _convert_project_data_to_dto(project_data):

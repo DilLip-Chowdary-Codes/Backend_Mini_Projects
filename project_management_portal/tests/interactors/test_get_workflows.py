@@ -19,16 +19,14 @@ class TestGetWorkflowsInteractor:
 
         workflow_storage = create_autospec(WorkflowStorageInterface)
         workflow_presenter = create_autospec(WorkflowPresenterInterface)
-        interactor = GetWorkflowsInteractor(
-            workflow_storage=workflow_storage,
-            workflow_presenter=workflow_presenter)
+        interactor = GetWorkflowsInteractor(workflow_storage=workflow_storage)
         workflow_storage.get_workflows\
             .return_value = workflows_details_dtos
         workflow_presenter.get_workflows_response\
             .return_value = workflows_details
 
         #act
-        response = interactor.get_workflows()
+        response = interactor.get_workflows_wrapper(workflow_presenter)
 
         #assert
         workflow_storage.get_workflows.assert_called_once()

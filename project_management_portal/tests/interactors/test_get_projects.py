@@ -26,9 +26,7 @@ class TestGetProjects:
         total_projects_count = 2
         project_storage = create_autospec(ProjectStorageInterface)
         project_presenter = create_autospec(ProjectPresenterInterface)
-        interactor = GetProjectsInteractor(
-            project_storage=project_storage,
-            project_presenter=project_presenter)
+        interactor = GetProjectsInteractor(project_storage=project_storage)
 
         project_storage.validate_admin_scope.return_value = True
         project_storage.get_projects_for_admin.return_value\
@@ -39,10 +37,11 @@ class TestGetProjects:
             .return_value = get_projects_response
 
         #act
-        response = interactor.get_projects(
+        response = interactor.get_projects_wrapper(
             user_id=user_id,
             offset=0,
-            limit=1
+            limit=1,
+            project_presenter=project_presenter
             )
 
         #assert
@@ -65,9 +64,7 @@ class TestGetProjects:
         total_projects_count = 2
         project_storage = create_autospec(ProjectStorageInterface)
         project_presenter = create_autospec(ProjectPresenterInterface)
-        interactor = GetProjectsInteractor(
-            project_storage=project_storage,
-            project_presenter=project_presenter)
+        interactor = GetProjectsInteractor(project_storage=project_storage)
 
         project_storage.validate_admin_scope.return_value = False
         project_storage.get_projects_for_user.return_value\
@@ -79,10 +76,11 @@ class TestGetProjects:
 
         #act
 
-        response = interactor.get_projects(
+        response = interactor.get_projects_wrapper(
             user_id=user_id,
                 offset=0,
-                limit=1)
+                limit=1,
+                project_presenter=project_presenter)
 
         #assert
         project_storage.validate_admin_scope.assert_called_once_with(

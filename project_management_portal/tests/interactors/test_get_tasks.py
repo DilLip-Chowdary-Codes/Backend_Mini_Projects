@@ -37,11 +37,9 @@ class TestGetTasks:
         task_presenter = create_autospec(TaskPresenterInterface)
         project_presenter = create_autospec(ProjectPresenterInterface)
 
-        interactor = GetTasksInteractor(
-            task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+        interactor = GetTasksInteractor(task_storage=task_storage,
+                                        project_storage=project_storage
+                                       )
 
         project_storage.validate_project_id.return_value = True
         project_storage.validate_developer_for_project.return_value = True
@@ -50,9 +48,12 @@ class TestGetTasks:
             = tasks_details_response
 
         #act
-        response = interactor.get_tasks(
+        response = interactor.get_tasks_wrapper(
             user_id=user_id,
-            project_id=project_id)
+            project_id=project_id,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter
+            )
 
         #assert
         assert response == tasks_details_response
@@ -81,23 +82,23 @@ class TestGetTasks:
         task_presenter = create_autospec(TaskPresenterInterface)
         project_presenter = create_autospec(ProjectPresenterInterface)
 
-        interactor = GetTasksInteractor(
-            task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+        interactor = GetTasksInteractor(task_storage=task_storage,
+                                        project_storage=project_storage
+                                       )
 
         project_storage.validate_project_id.return_value = False
         task_storage.get_tasks.return_value = tasks_details_dtos
         project_presenter.raise_invalid_project_id_exception\
             .side_effect = NotFound(*INVALID_PROJECT)
         expection_error_msg = "Invalid project_id, try with valid project_id"
-        
+
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_tasks(
-                user_id=user_id,
-                project_id=project_id)
+            interactor.get_tasks_wrapper(user_id=user_id,
+                                         project_id=project_id,
+                                         project_presenter=project_presenter,
+                                         task_presenter=task_presenter
+                                        )
 
         #assert
         assert error.value.message == expection_error_msg
@@ -121,11 +122,9 @@ class TestGetTasks:
         task_presenter = create_autospec(TaskPresenterInterface)
         project_presenter = create_autospec(ProjectPresenterInterface)
 
-        interactor = GetTasksInteractor(
-            task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+        interactor = GetTasksInteractor(task_storage=task_storage,
+                                        project_storage=project_storage
+                                       )
 
         project_storage.validate_project_id.return_value = True
         project_storage.validate_developer_for_project.return_value = False
@@ -135,9 +134,11 @@ class TestGetTasks:
 
         #act
         with pytest.raises(Unauthorized) as error:
-            interactor.get_tasks(
-                user_id=user_id,
-                project_id=project_id)
+            interactor.get_tasks_wrapper(user_id=user_id,
+                                         project_id=project_id,
+                                         project_presenter=project_presenter,
+                                         task_presenter=task_presenter
+                                        )
 
         #assert
         assert error.value.message == expection_error_msg

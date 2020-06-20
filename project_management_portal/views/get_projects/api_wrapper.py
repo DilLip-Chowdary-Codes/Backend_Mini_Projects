@@ -8,6 +8,7 @@ from project_management_portal.presenters.project_presenter_implementation\
     import ProjectPresenterImplementation
 from project_management_portal.storages.project_storage_implementation\
     import ProjectStorageImplementation
+from project_management_portal.constants import DEFAULT_LIMIT, DEFAULT_OFFSET
 
 from .validator_class import ValidatorClass
 
@@ -20,18 +21,18 @@ def api_wrapper(*args, **kwargs):
     project_storage = ProjectStorageImplementation()
     project_presenter = ProjectPresenterImplementation()
     interactor = GetProjectsInteractor(
-        project_storage=project_storage,
-        project_presenter=project_presenter
+        project_storage=project_storage
         )
 
     user_id = user.user_id
-    limit = query_params.get('limit')
-    offset = query_params.get('offset')
+    limit = query_params.get('limit', DEFAULT_LIMIT)
+    offset = query_params.get('offset', DEFAULT_OFFSET)
 
-    projects_details = interactor.get_projects(
+    projects_details = interactor.get_projects_wrapper(
         user_id=user_id,
         offset=offset,
-        limit=limit
+        limit=limit,
+        project_presenter=project_presenter
         )
 
     response_data = json.dumps(projects_details)

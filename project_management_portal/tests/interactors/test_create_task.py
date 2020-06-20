@@ -41,9 +41,8 @@ class TestCreateTask:
 
         interactor = CreateTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage
+            )
 
         project_storage.validate_project_id.return_value = True
         task_storage.validate_state_id.return_value = True
@@ -52,9 +51,11 @@ class TestCreateTask:
         task_presenter.get_create_task_response.return_value = task_details_response
 
         #act
-        response = interactor.create_task(
+        response = interactor.create_task_wrapper(
             user_id=user_id,
-            task_data=task_data)
+            task_data=task_data,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter)
 
         #assert
         assert response == task_details_response
@@ -82,9 +83,8 @@ class TestCreateTask:
 
         interactor = CreateTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage
+            )
 
         project_storage.validate_project_id.return_value = False
         project_presenter.raise_invalid_project_id_exception\
@@ -93,9 +93,12 @@ class TestCreateTask:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.create_task(
+            interactor.create_task_wrapper(
             user_id=user_id,
-            task_data=task_data)
+            task_data=task_data,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter
+            )
 
         #assert
         assert str(error.value) == expected_error_msg
@@ -114,9 +117,8 @@ class TestCreateTask:
 
         interactor = CreateTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage
+            )
 
         project_storage.validate_project_id.return_value = True
         task_storage.validate_state_id.return_value = False
@@ -126,9 +128,12 @@ class TestCreateTask:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.create_task(
+            interactor.create_task_wrapper(
             user_id=user_id,
-            task_data=task_data)
+            task_data=task_data,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter
+            )
 
         #assert
         assert str(error.value) == expected_error_msg
@@ -149,9 +154,8 @@ class TestCreateTask:
 
         interactor = CreateTaskInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            project_presenter=project_presenter,
-            task_presenter=task_presenter)
+            project_storage=project_storage
+            )
 
         project_storage.validate_project_id.return_value = True
         task_storage.validate_state_id.return_value = True
@@ -162,9 +166,12 @@ class TestCreateTask:
 
         #act
         with pytest.raises(Unauthorized) as error:
-            interactor.create_task(
+            interactor.create_task_wrapper(
                 user_id=user_id,
-                task_data=task_data)
+                task_data=task_data,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter
+            )
 
         #assert
         assert str(error.value) == expected_error_msg

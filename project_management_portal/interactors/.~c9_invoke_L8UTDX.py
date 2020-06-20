@@ -15,10 +15,12 @@ from project_management_portal\
 
 from project_management_portal.dtos\
     import TransitionDto, ChecklistStatusDto, UpdateTransitionInputDto
-from project_management_portal.exceptions import InvalidProjectId,\
-                                                 InvalidTaskId,\
-                                                 InvalidTransition,\
-                                                 MandatoryChecklistNotChecked
+from project_management_portal.exceptions \
+    import InvalidProjectId,\
+           InvalidTaskId,\
+           InvalidTransition,\
+           MandatoryChecklistNotChecked
+    
 
 class TaskStateTransitionInteractor:
 

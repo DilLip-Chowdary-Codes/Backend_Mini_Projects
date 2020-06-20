@@ -18,11 +18,10 @@ def api_wrapper(*args, **kwargs):
     storage = WorkflowStorageImplementation()
     presenter = WorkflowPresenterImplementation()
     interactor = GetWorkflowsInteractor(
-        workflow_storage=storage,
-        workflow_presenter=presenter
+        workflow_storage=storage
         )
 
-    workflows = interactor.get_workflows()
+    workflows = interactor.get_workflows_wrapper(presenter)
     
     response_data = json.dumps(workflows)
     return HttpResponse(response_data, status=200)

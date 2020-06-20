@@ -33,9 +33,7 @@ def api_wrapper(*args, **kwargs):
     project_presenter = ProjectPresenterImplementation()
     interactor = GetStatesTransitionDetailsInteractor(
         project_storage=project_storage,
-        task_storage=task_storage,
-        project_presenter=project_presenter,
-        task_presenter=task_presenter
+        task_storage=task_storage
         )
 
     transition_details_query_dict = {
@@ -45,9 +43,10 @@ def api_wrapper(*args, **kwargs):
         "to_state_id": to_state_id
     }
 
-    states_transition_details = interactor.get_states_transition_details(
-        transition_details_query_dict
-        )
+    states_transition_details = interactor\
+        .get_states_transition_details_wrapper(transition_details_query_dict,
+                                               project_presenter,
+                                               task_presenter)
 
     response_data = json.dumps(states_transition_details)
 

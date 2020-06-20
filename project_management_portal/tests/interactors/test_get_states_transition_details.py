@@ -44,9 +44,7 @@ class TestGetStatesTransitionDetails:
 
         interactor = GetStatesTransitionDetailsInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage)
 
         project_id = transition_details_query_dict['project_id']
         task_id = transition_details_query_dict['task_id']
@@ -63,8 +61,10 @@ class TestGetStatesTransitionDetails:
             .return_value = transition_details_response
 
         #act
-        response = interactor.get_states_transition_details(
-            transition_details_query_dict)
+        response = interactor.get_states_transition_details_wrapper(
+            transition_details_query_dict,
+            project_presenter=project_presenter,
+            task_presenter=task_presenter)
 
         #assert
         assert response == transition_details_response
@@ -94,9 +94,7 @@ class TestGetStatesTransitionDetails:
 
         interactor = GetStatesTransitionDetailsInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = None
         project_presenter.raise_invalid_project_id_exception\
@@ -105,8 +103,10 @@ class TestGetStatesTransitionDetails:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_states_transition_details(
-                transition_details_query_dict)
+            interactor.get_states_transition_details_wrapper(
+                transition_details_query_dict,
+                project_presenter=project_presenter,
+                task_presenter=task_presenter)
 
         #assert
         assert error.value.message == expected_error_msg
@@ -128,9 +128,7 @@ class TestGetStatesTransitionDetails:
 
         interactor = GetStatesTransitionDetailsInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = project_dto
         task_storage.validate_task_id.return_value = None
@@ -140,8 +138,10 @@ class TestGetStatesTransitionDetails:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_states_transition_details(
-                transition_details_query_dict)
+            interactor.get_states_transition_details_wrapper(
+                transition_details_query_dict,
+                project_presenter=project_presenter,
+                task_presenter=task_presenter)
 
         #assert
         assert error.value.message == expected_error_msg
@@ -165,9 +165,7 @@ class TestGetStatesTransitionDetails:
 
         interactor = GetStatesTransitionDetailsInteractor(
             task_storage=task_storage,
-            project_storage=project_storage,
-            task_presenter=task_presenter,
-            project_presenter=project_presenter)
+            project_storage=project_storage)
 
         project_storage.validate_project_id.return_value = project_dto
         task_storage.validate_task_id.return_value = task_dto
@@ -182,8 +180,10 @@ class TestGetStatesTransitionDetails:
 
         #act
         with pytest.raises(NotFound) as error:
-            interactor.get_states_transition_details(
-                transition_details_query_dict)
+            interactor.get_states_transition_details_wrapper(
+                transition_details_query_dict,
+                project_presenter=project_presenter,
+                task_presenter=task_presenter)
 
         #assert
         assert error.value.message == expected_error_msg

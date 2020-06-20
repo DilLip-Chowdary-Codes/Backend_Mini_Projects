@@ -31,9 +31,7 @@ def api_wrapper(*args, **kwargs):
 
     interactor = TaskStateTransitionInteractor(
         project_storage=project_storage,
-        task_storage=task_storage,
-        project_presenter=project_presenter,
-        task_presenter=task_presenter
+        task_storage=task_storage
         )
 
     project_id = kwargs['project_id']
@@ -51,9 +49,10 @@ def api_wrapper(*args, **kwargs):
         "checklist": checklist
     }
 
-    task_details = interactor.update_task_state(
-        update_task_state_data
-        )
+    task_details = interactor.update_task_state_wrapper(
+        update_task_state_data,
+        project_presenter=project_presenter,
+        task_presenter=task_presenter)
 
     response_data = json.dumps(task_details)
     return HttpResponse(response_data, status=201)

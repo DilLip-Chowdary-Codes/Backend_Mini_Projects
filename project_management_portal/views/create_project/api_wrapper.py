@@ -19,22 +19,27 @@ def api_wrapper(*args, **kwargs):
     storage = ProjectStorageImplementation()
     presenter = ProjectPresenterImplementation()
     interactor = CreateProjectInteractor(
-        storage=storage,
-        presenter=presenter
+        storage=storage
         )
 
     user_id = user.user_id
+    developers = request_data.get('developers')
+    is_developers_empty = not developers
+    if is_developers_empty:
+        developers = []
+
     project_data = {
         "name": request_data['name'],
         "description": request_data['description'],
         "workflow_id": request_data['workflow_id'],
         "project_type": request_data['project_type'],
-        "developers": request_data.get('developers')
+        "developers": developers
     }
 
-    project_details = interactor.create_project(
+    project_details = interactor.create_project_wrapper(
         user_id=user_id,
-        project_data=project_data
+        project_data=project_data,
+        presenter=presenter
         )
     project_details['success_message'] = "Project Created Succesfully"
 

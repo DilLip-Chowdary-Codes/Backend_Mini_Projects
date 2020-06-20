@@ -19,17 +19,16 @@ def api_wrapper(*args, **kwargs):
     storage = UserStorageImplementation()
     presenter = UserPresenterImplementation()
     oauth_storage = OAuth2SQLStorage()
-    interactor = UserLoginInteractor(
-        storage=storage,
-        oauth_storage=oauth_storage,
-        presenter=presenter
-        )
+    interactor = UserLoginInteractor(storage=storage,
+                                     oauth_storage=oauth_storage
+                                    )
+
     username = request_data['username']
     password = request_data['password']
 
-    login_response = interactor.login(
-        username=username,
-        password=password)
-    print(login_response)
+    login_response = interactor.login_wrapper(username=username,
+                                              password=password,
+                                              presenter=presenter
+                                             )
     response_data = json.dumps(login_response)
     return HttpResponse(response_data, status=200)

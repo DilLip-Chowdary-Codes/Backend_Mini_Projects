@@ -16,15 +16,12 @@ def api_wrapper(*args, **kwargs):
     # ---------MOCK IMPLEMENTATION---------
     storage = UserStorageImplementation()
     presenter = UserPresenterImplementation()
-    interactor = UserLogoutInteractor(
-        storage=storage,
-        presenter=presenter
-        )
+    interactor = UserLogoutInteractor(storage=storage)
 
     access_token = kwargs['access_token']
-    login_response = interactor.logout(
-        access_token=access_token
-        )
+    login_response = interactor.logout_wrapper(access_token=access_token,
+                                               presenter=presenter
+                                              )
 
     response_data = json.dumps(login_response)
     return HttpResponse(response_data, status=200)

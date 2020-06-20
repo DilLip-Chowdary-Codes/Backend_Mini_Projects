@@ -27,9 +27,7 @@ class TestCreateProject:
         user_id = 1
         storage = create_autospec(ProjectStorageInterface)
         presenter = create_autospec(ProjectPresenterInterface)
-        interactor = CreateProjectInteractor(
-            storage=storage,
-            presenter=presenter)
+        interactor = CreateProjectInteractor(storage=storage)
 
         storage.validate_workflow_id.return_value = True
         storage.create_project.return_value = project_details_dto
@@ -38,9 +36,10 @@ class TestCreateProject:
 
         #act
 
-        response = interactor.create_project(
+        response = interactor.create_project_wrapper(
             user_id=user_id,
-            project_data=project_data
+            project_data=project_data,
+            presenter=presenter
             )
 
         #assert
@@ -60,9 +59,7 @@ class TestCreateProject:
         workflow_id = project_data.get('workflow_id')
         storage = create_autospec(ProjectStorageInterface)
         presenter = create_autospec(ProjectPresenterInterface)
-        interactor = CreateProjectInteractor(
-            storage=storage,
-            presenter=presenter)
+        interactor = CreateProjectInteractor(storage=storage)
 
         storage.validate_workflow_id.return_value = False
         presenter.raise_invalid_workflow_id_exception.side_effect = \
@@ -73,9 +70,10 @@ class TestCreateProject:
         #act
 
         with pytest.raises(NotFound) as error:
-            interactor.create_project(
+            interactor.create_project_wrapper(
                 user_id=user_id,
-                project_data=project_data
+                project_data=project_data,
+                presenter=presenter
                 )
 
         #assert

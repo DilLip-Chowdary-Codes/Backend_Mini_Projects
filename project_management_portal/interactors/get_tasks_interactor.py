@@ -15,34 +15,45 @@ from project_management_portal\
     import TaskPresenterInterface
 
 from project_management_portal.dtos import TaskDto
+from project_management_portal.exceptions\
+    import InvalidProjectId, UnauthorizedUser
 
 class GetTasksInteractor:
 
     def __init__(self,
                  project_storage: ProjectStorageInterface,
-                 task_storage: TaskStorageInterface,
-                 project_presenter: ProjectPresenterInterface,
-                 task_presenter: TaskPresenterInterface):
+                 task_storage: TaskStorageInterface):
 
         self.project_storage = project_storage
         self.task_storage = task_storage
-        self.project_presenter = project_presenter
-        self.task_presenter = task_presenter
+
+    def get_tasks_wrapper(self, user_id: int, project_id: int,
+                          project_presenter: ProjectPresenterInterface,
+                          task_presenter: TaskPresenterInterface):
+        try:
+            tasks_details_dtos = self.get_tasks(user_id, project_id)
+
+        except InvalidProjectId:
+            project_presenter.raise_invalid_project_id_exception()
+        except UnauthorizedUser:
+            project_presenter.raise_unauthorized_developer_exception()
+
+        response = task_presenter.get_tasks_response(tasks_details_dtos)
+        return response
 
     def get_tasks(self, user_id: int, project_id: int):
         is_project_invalid  = not self.project_storage.validate_project_id(
             project_id=project_id)
 
         if is_project_invalid:
-            self.project_presenter.raise_invalid_project_id_exception()
+            raise InvalidProjectId()
 
         is_user_unauthorized = not self.project_storage\
             .validate_developer_for_project(user_id, project_id)
 
         if is_user_unauthorized:
-            self.project_presenter.raise_unauthorized_developer_exception()
+            raise UnauthorizedUser()
 
         tasks_details_dtos = self.task_storage.get_tasks(project_id)
 
-        response = self.task_presenter.get_tasks_response(tasks_details_dtos)
-        return response
+        return tasks_details_dtos

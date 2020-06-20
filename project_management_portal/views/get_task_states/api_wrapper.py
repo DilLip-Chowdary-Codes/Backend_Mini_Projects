@@ -26,15 +26,12 @@ def api_wrapper(*args, **kwargs):
 
     project_storage = ProjectStorageImplementation()
     task_storage = TaskStorageImplementation()
-    
+
     task_presenter = TaskPresenterImplementation()
     project_presenter = ProjectPresenterImplementation()
     interactor = GetStatesForTaskInteractor(
         project_storage=project_storage,
-        task_storage=task_storage,
-        project_presenter=project_presenter,
-        task_presenter=task_presenter
-        )
+        task_storage=task_storage)
 
     task_state_data = {
         "user_id": user.user_id,
@@ -42,9 +39,11 @@ def api_wrapper(*args, **kwargs):
         "task_id": task_id
     }
 
-    task_states = interactor.get_states_for_task_based_on_current_state(
-        task_state_data
-        )
+    task_states = \
+        interactor.get_states_for_task_based_on_current_state_wrapper(
+        task_state_data,
+        project_presenter,
+        task_presenter)
 
     response_data = json.dumps(task_states)
     return HttpResponse(response_data, status=200)
