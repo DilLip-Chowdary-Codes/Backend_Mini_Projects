@@ -16,7 +16,7 @@ from django_swagger_utils.drf_server.exceptions import BadRequest
 
 class TestGetDomainPosts:
 
-    def test_get_post_details_with_invalid_post_ids_raises_exception(self):
+    def test_get_domain_posts_with_invalid_post_ids_raises_exception(self):
             #arrange
             user_id = 1
             domain_id = 1
@@ -46,7 +46,7 @@ class TestGetDomainPosts:
             post_presenter.raise_invalid_post_ids_exception\
                 .assert_called_once_with(invalid_post_ids)
 
-    def test_get_domain_details_with_invalid_domain_id_raises_exception(self):
+    def test_get_domain_posts_with_invalid_domain_id_raises_exception(self):
         #arrange
         user_id = 1
         domain_id = 1
@@ -72,7 +72,7 @@ class TestGetDomainPosts:
         domain_presenter.raise_invalid_domain_id_exception\
             .assert_called_once()
 
-    def test_get_domain_details_with_user_who_is_not_follower_raises_exception(
+    def test_get_domain_posts_with_user_who_is_not_follower_raises_exception(
             self, domain_dto):
         #arrange
         user_id = 1
