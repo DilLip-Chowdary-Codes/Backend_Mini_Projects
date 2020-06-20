@@ -10,7 +10,7 @@ from formaster.exceptions import FormClosed, InvalidFormId,\
                                  InvalidQuestionId, InvalidUserResponse
 
 class TestMCQsFormSubmission:
-    
+
     def test_mcq_form_submission_with_invalid_form_id_raises_exception(self):
         #arrange
         question_id = 1
@@ -108,7 +108,10 @@ class TestMCQsFormSubmission:
             question_id)
         presenter.raise_invalid_user_response.assert_called_once()
 
-    def test_mcq_form_submission_with_valid_values(self,form_dto, mcq_response):
+    def test_mcq_form_submission_with_valid_values(self,
+                                                   form_dto,
+                                                   mcq_response,
+                                                   snapshot):
         #arrange
         question_id = 1
         form_id = 1
@@ -137,4 +140,4 @@ class TestMCQsFormSubmission:
             question_id)
         presenter.submit_form_response_return.assert_called_once_with(
             response_id)
-        assert response == mcq_response
+        snapshot.assert_match(response,'response')

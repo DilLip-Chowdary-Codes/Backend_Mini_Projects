@@ -83,13 +83,13 @@ class TestFillInTheBlanksFormSubmission:
             question_id, form_id)
         presenter.raise_invalid_question_id.assert_called_once()
 
-    def test_fill_in_the_blank_form_submission_with_invalid_user_response_raises_exception(self,
-                                                                    form_dto):
+    def test_fill_in_the_blank_form_submission_with_invalid_user_response_raises_exception(
+            self,
+            form_dto):
         #arrange
         question_id = 1
         form_id = 1
         user_id = 1
-        option_ids = [2, 3, 4, 5]
         user_submitted_text_answer = ""
         storage = create_autospec(StorageInterface)
         presenter = create_autospec(PresenterInterface)
@@ -110,13 +110,15 @@ class TestFillInTheBlanksFormSubmission:
             question_id, form_id)
         presenter.raise_invalid_user_response.assert_called_once()
 
-    def test_fill_in_the_blank_form_submission_with_valid_values(self,form_dto,
-                                                   fill_in_the_blank_response):
+    def test_fill_in_the_blank_form_submission_with_valid_values(
+            self,
+            form_dto,
+            fill_in_the_blank_response,
+            snapshot):
         #arrange
         question_id = 1
         form_id = 1
         user_id = 1
-        option_ids = [2, 3, 4, 5]
         response_id = 2
         user_submitted_text_answer = "Hi"
         storage = create_autospec(StorageInterface)
@@ -140,4 +142,4 @@ class TestFillInTheBlanksFormSubmission:
             question_id, form_id)
         presenter.submit_form_response_return.assert_called_once_with(
             response_id)
-        assert response == fill_in_the_blank_response
+        snapshot.assert_match(response,'response')
