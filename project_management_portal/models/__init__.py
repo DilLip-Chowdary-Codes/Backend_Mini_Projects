@@ -5,6 +5,9 @@ from .transition import Transition
 from .state import State
 from .task import Task
 from .checklist import Checklist
+from .company import Company, Country
+from .group import Group, GroupLevel
+from .post import Post
 
 __all__ = ["User", "Project", "Workflow",
     "Transition", "State", "Task", "Checklist"]

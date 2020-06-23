@@ -9,6 +9,9 @@ class User(AbstractUser):
     profile_pic = models.URLField()
     phone_no = models.CharField(max_length=12)
     is_admin = models.BooleanField(default=False)
+    name = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    lang = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.username
+        return self.email
