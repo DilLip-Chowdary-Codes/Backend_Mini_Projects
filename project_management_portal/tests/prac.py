@@ -60,7 +60,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.User
 
-    name = "John"
+    name = factory.Faker('name')
     lang = factory.SelfAttribute('country.lang')
     country = factory.SubFactory(CountryFactory)
 
@@ -69,9 +69,10 @@ class CompanyFactory(factory.django.DjangoModelFactory):
         model = models.Company
 
     name = "ACME, Inc."
-    owner = factory.SubFactory(UserFactory, country=factory.SelfAttribute('..country'))
     country = factory.SubFactory(CountryFactory)
-    owner = factory.SubFactory(UserFactory, country=country)
+    # owner = factory.SubFactory(UserFactory, country=country)
+    # owner = factory.SubFactory(UserFactory, country=factory.SelfAttribute('country'))
+    owner = factory.SubFactory(UserFactory(username=factory.Faker('name'), country=country))
 
     # owner = factory.SubFactory(
     #     UserFactory,country=factory.LazyAttribute())
