@@ -2,7 +2,7 @@
 
 REQUEST_BODY_JSON = """
 {
-    "issue_type": "Task",
+    "issue_type": "TASK",
     "title": "string",
     "description": "string",
     "state_id": 1

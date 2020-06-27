@@ -43,8 +43,8 @@ class ProjectStorageImplementation(ProjectStorageInterface):
         is_admin = Project.objects.filter(
             id=project_id,
             created_by_id=user_id).exists()
-
         is_user_authorized = is_developer or is_admin
+
         return is_user_authorized
 
     def validate_transition(self, workflow_id, from_state_id, to_state_id):

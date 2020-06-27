@@ -1,12 +1,12 @@
 """
-# TODO: Update test case description
+User Logout
 """
 
-from django_swagger_utils.utils.test import CustomAPITestCase
+from project_management_portal.utils.custom_test_utils import CustomTestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 REQUEST_BODY = """
-
+{}
 """
 
 TEST_CASE = {
@@ -19,8 +19,7 @@ TEST_CASE = {
     },
 }
 
-
-class TestCase01LogoutAPITestCase(CustomAPITestCase):
+class TestCase01LogoutAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
@@ -28,6 +27,4 @@ class TestCase01LogoutAPITestCase(CustomAPITestCase):
     test_case_dict = TEST_CASE
 
     def test_case(self):
-        self.default_test_case() # Returns response object.
-        # Which can be used for further response object checks.
-        # Add database state checks here.
+        self.default_test_case()

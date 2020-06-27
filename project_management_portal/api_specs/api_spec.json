@@ -449,11 +449,11 @@
 					"issue_type": {
 						"type": "string",
 						"enum": [
-							"Task",
-							"Bug",
-							"User Story",
-							"Developer Story",
-							"Enhancement"
+							"TASK",
+							"BUG",
+							"USER_STORY",
+							"DEVELOPER_STORY",
+							"ENHANCEMENT"
 						]
 					},
 					"title": {
@@ -983,21 +983,14 @@
 					]
 				}],
 				"parameters": [{
-						"$ref": "#/parameters/AccessTokenParameter"
-					},
-					{
-						"$ref": "#/parameters/ProjectIdParameter"
-					}
-				],
+					"$ref": "#/parameters/AccessTokenParameter"
+				}],
 				"responses": {
 					"201": {
 						"$ref": "#/responses/GetWorkFlowsResponse"
 					},
 					"403": {
 						"$ref": "#/responses/AccessForbiddenResponse"
-					},
-					"404": {
-						"$ref": "#/responses/ProjectNotFoundResponse"
 					}
 				}
 			}

@@ -33,7 +33,7 @@ class UserStorageImplementation(UserStorageInterface):
                                   ) -> bool:
         user = User.objects.get(username=username)
         credentials_valid = user.check_password(password)
-        print(user.password)
+
         return credentials_valid
 
     def validate_access_token(self, access_token: str) -> Union[bool, object]:

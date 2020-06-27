@@ -5,7 +5,7 @@ class ValidationsMixin:
     
     def validate_limit(self, limit: int):
         
-        is_limit_value_invalid = limit <= 0
+        is_limit_value_invalid = limit <= 0 or limit >=25
         if is_limit_value_invalid:
             raise InvalidLimitValue()
 

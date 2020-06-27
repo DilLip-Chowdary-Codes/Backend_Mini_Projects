@@ -51,6 +51,12 @@ class GetStatesForTaskInteractor:
         task_id = task_state_data['task_id']
         user_id = task_state_data['user_id']
 
+        is_project_id_invalid = not self.project_storage\
+            .validate_project_id(project_id=project_id)
+
+        if is_project_id_invalid:
+            raise InvalidProjectId()
+
         is_user_unauthorized = not self.project_storage\
             .validate_developer_for_project(
                 user_id,
@@ -58,12 +64,6 @@ class GetStatesForTaskInteractor:
 
         if is_user_unauthorized:
             raise UnauthorizedUser()
-
-        is_project_id_invalid = not self.project_storage\
-            .validate_project_id(project_id=project_id)
-
-        if is_project_id_invalid:
-            raise InvalidProjectId()
 
         task_dto = self.task_storage.validate_task_id(
             task_id=task_id)

@@ -1,14 +1,13 @@
 """
-# TODO: Update test case description
+User_login (Normal_User)
 """
-
-from django_swagger_utils.utils.test import CustomAPITestCase
+from project_management_portal.utils.custom_test_utils import CustomTestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 REQUEST_BODY = """
 {
-    "username": "string",
-    "password": "string"
+    "username": "user_1",
+    "password": "password"
 }
 """
 
@@ -22,8 +21,7 @@ TEST_CASE = {
     },
 }
 
-
-class TestCase01UserLoginAPITestCase(CustomAPITestCase):
+class TestCase01UserLoginAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
@@ -31,6 +29,10 @@ class TestCase01UserLoginAPITestCase(CustomAPITestCase):
     test_case_dict = TEST_CASE
 
     def test_case(self):
-        self.default_test_case() # Returns response object.
-        # Which can be used for further response object checks.
-        # Add database state checks here.
+        self.create_user()
+        response = self.default_test_case()
+        # import json
+        # response = json.loads(response)
+        # self.assert_match_snapshot(
+        #     name='login_response',
+        #     value=response)

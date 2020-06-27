@@ -87,6 +87,8 @@ class TestTaskStorage:
             project_id=1)
 
         #assert
+        print(response)
+        print(tasks_details_dtos)
         assert response == tasks_details_dtos
 
     def test_get_tasks_with_no_tasks(self):

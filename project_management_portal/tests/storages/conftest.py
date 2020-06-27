@@ -91,10 +91,10 @@ def transitions(states, checklist):
     return transitions
 
 @pytest.fixture
-def workflows(states, transitions):
+def workflows(states, transitions, users):
     workflows_list = [
-        Workflow(name="Workflow_1"),
-        Workflow(name="Workflow_2")
+        Workflow(name="Workflow_1", created_by_id=1),
+        Workflow(name="Workflow_2",  created_by_id=1)
         ]
     with freeze_time("2020-05-28 10:06:23"):
         Workflow.objects.bulk_create(workflows_list)
@@ -104,11 +104,11 @@ def workflows(states, transitions):
     return workflows
 
 @pytest.fixture
-def workflows_with_no_transition(states, transitions):
+def workflows_with_no_transition(states, transitions, users):
 
     workflows_list = [
-        Workflow(name="Workflow_1"),
-        Workflow(name="Workflow_2")
+        Workflow(name="Workflow_1", created_by_id=1),
+        Workflow(name="Workflow_2", created_by_id=1)
         ]
     with freeze_time("2020-05-28 10:06:23"):
         Workflow.objects.bulk_create(workflows_list)
@@ -117,10 +117,10 @@ def workflows_with_no_transition(states, transitions):
     return workflows
 
 @pytest.fixture
-def workflows_with_no_states(transitions):
+def workflows_with_no_states(transitions, users):
     workflows_list = [
-        Workflow(name="Workflow_1"),
-        Workflow(name="Workflow_2")
+        Workflow(name="Workflow_1", created_by_id=1),
+        Workflow(name="Workflow_2", created_by_id=1)
         ]
     with freeze_time("2020-05-28 10:06:23"):
         Workflow.objects.bulk_create(workflows_list)
@@ -129,10 +129,10 @@ def workflows_with_no_states(transitions):
     return workflows
 
 @pytest.fixture
-def workflows_with_no_transitions(states):
+def workflows_with_no_transitions(states, users):
     workflows_list = [
-        Workflow(name="Workflow_1"),
-        Workflow(name="Workflow_2")
+        Workflow(name="Workflow_1", created_by_id=1),
+        Workflow(name="Workflow_2", created_by_id=1)
         ]
     with freeze_time("2020-05-28 10:06:23"):
         Workflow.objects.bulk_create(workflows_list)

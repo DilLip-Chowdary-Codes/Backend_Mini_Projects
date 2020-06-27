@@ -207,7 +207,7 @@ task_2_details_dto = TaskDetailsDto(
   state=state_2_dto.name
   )
 
-tasks_details_dtos = [task_details_dto, task_2_details_dto]
+tasks_details_dtos = [task_2_details_dto, task_details_dto]
 
 user_details = {
   "user_id":1,
