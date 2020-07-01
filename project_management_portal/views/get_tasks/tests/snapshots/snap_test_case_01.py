@@ -12,12 +12,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case status'] = 200
 snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
     'project': {
         'created_at': '2020-06-26 00:00:00',
-        'created_by': {
-            'phone_no': '',
-            'profile_pic': '',
-            'user_id': 1,
-            'username': 'username'
-        },
+        'created_by': 1,
         'description': 'project_1_description',
         'developers': [
             1,
@@ -30,12 +25,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
     },
     'tasks': [
         {
-            'assignee_id': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'assignee_id': 1,
             'description': 'description_1',
             'issue_type': 'Task',
             'state': 'state_1',
@@ -43,12 +33,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_1'
         },
         {
-            'assignee_id': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'assignee_id': 1,
             'description': 'description_2',
             'issue_type': 'Bug',
             'state': 'state_1',
@@ -56,12 +41,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_2'
         },
         {
-            'assignee_id': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'assignee_id': 1,
             'description': 'description_3',
             'issue_type': 'Developer Story',
             'state': 'state_1',
@@ -69,12 +49,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_3'
         },
         {
-            'assignee_id': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'assignee_id': 1,
             'description': 'description_4',
             'issue_type': 'User Story',
             'state': 'state_1',
@@ -82,12 +57,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_4'
         },
         {
-            'assignee_id': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'assignee_id': 1,
             'description': 'description_5',
             'issue_type': 'Enhancement',
             'state': 'state_1',
@@ -104,7 +74,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '1348',
+        '916',
         'Content-Length'
     ],
     'content-type': [

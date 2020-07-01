@@ -10,7 +10,7 @@ from user_app.interactors .get_user_dtos import GetUserDtosInteractor
 class UserServiceInterface:
 
     @staticmethod
-    def is_admin(user_id: int):
+    def is_user_admin(user_id: int):
         storage = UserStorageImplementation()
         interactor = IsUserAdminInteractor(storage=storage)
         is_admin = interactor.is_user_admin(user_id=user_id)

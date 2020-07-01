@@ -62,7 +62,6 @@ class TestTaskStorage:
 
         #arrange
         from .raw_inputs import task_dto
-        from .expected_responses import task_details_dto
         user_id = 1
         storage = TaskStorageImplementation()
         interface_mock.get_user_dto.return_value = user_admin_dto

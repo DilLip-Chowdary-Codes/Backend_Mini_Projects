@@ -45,7 +45,7 @@ project_details_dto = ProjectDetailsDto(
     description="it's a blaw blaw blaw blaw  blaw blaw ",
     workflow="type",
     project_type="Classic Software",
-    created_by=user_dto,
+    created_by_id=user_dto.user_id,
     created_at="2020-05-28 10:06:23 AM",
     developer_ids=[user_dto.user_id])
 
@@ -91,7 +91,7 @@ task_project_dto = ProjectDetailsDto(
   description="it's a blaw blaw blaw blaw  blaw blaw ",
   workflow="",
   project_type="Classic Software",
-  created_by=task_user_dto,
+  created_by_id=task_user_dto.user_id,
   created_at="2020-05-28 10:06:23",
   developer_ids=[developer_dto.user_id]
   )
@@ -101,7 +101,7 @@ task_details_dto = TaskDetailsDto(
   project=task_project_dto,
   issue_type="Enhancement",
   title="Optimizing DB",
-  assignee_id=task_user_dto,
+  assignee_id=task_user_dto.user_id,
   description="string",
   state=state_dto.name
   )

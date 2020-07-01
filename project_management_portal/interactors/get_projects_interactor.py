@@ -48,7 +48,7 @@ class GetProjectsInteractor(ValidationsMixin):
         adapter_service = get_service_adapter()
         user_service = adapter_service.user_service
 
-        is_admin = user_service.is_admin(user_id=user_id)
+        is_admin = user_service.is_user_admin(user_id=user_id)
 
         if is_admin:
             total_projects_count = self.project_storage\

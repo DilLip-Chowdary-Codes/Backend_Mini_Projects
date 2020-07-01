@@ -11,12 +11,7 @@ snapshots['TestCase01CreateProjectAPITestCase::test_case status'] = 201
 
 snapshots['TestCase01CreateProjectAPITestCase::test_case body'] = {
     'created_at': '2020-06-26 00:00:00',
-    'created_by': {
-        'phone_no': '',
-        'profile_pic': '',
-        'user_id': 1,
-        'username': 'username'
-    },
+    'created_by': 1,
     'description': 'Some_Random_Text',
     'developers': [
     ],
@@ -33,7 +28,7 @@ snapshots['TestCase01CreateProjectAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '332',
+        '260',
         'Content-Length'
     ],
     'content-type': [

@@ -10,22 +10,12 @@ snapshots = Snapshot()
 snapshots['TestCase01UpdateTaskStateAPITestCase::test_case status'] = 201
 
 snapshots['TestCase01UpdateTaskStateAPITestCase::test_case body'] = {
-    'assignee_id': {
-        'phone_no': '',
-        'profile_pic': '',
-        'user_id': 1,
-        'username': 'username'
-    },
+    'assignee_id': 1,
     'description': 'description_1',
     'issue_type': 'Task',
     'project': {
         'created_at': '2020-06-26 00:00:00',
-        'created_by': {
-            'phone_no': '',
-            'profile_pic': '',
-            'user_id': 1,
-            'username': 'username'
-        },
+        'created_by': 1,
         'description': 'project_1_description',
         'developers': [
             1,
@@ -47,7 +37,7 @@ snapshots['TestCase01UpdateTaskStateAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '498',
+        '354',
         'Content-Length'
     ],
     'content-type': [

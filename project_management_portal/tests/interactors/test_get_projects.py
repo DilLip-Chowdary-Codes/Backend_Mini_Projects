@@ -9,9 +9,8 @@ from project_management_portal.interactors.get_projects_interactor\
     import GetProjectsInteractor
 from .raw_inputs import project_data
 from .expected_responses\
-    import create_project_response,\
+    import \
         get_projects_response,\
-        project_dto,\
         projects_dtos
 
 from project_management_portal.exceptions import InvalidWorkFlow
@@ -19,9 +18,9 @@ from project_management_portal.adapters.user_service import UserService
 
 @pytest.mark.django_db
 class TestGetProjects:
-    
+
     @patch.object(UserService, 'interface')
-    def test_get_projects_for_admin(self, interface_mock):
+    def test_get_projects_for_admin(self, interface_mock, snapshot):
 
         #arrange
         user_id = 1
@@ -35,10 +34,10 @@ class TestGetProjects:
             = total_projects_count
         project_presenter.get_projects_response\
             .return_value = get_projects_response
-        interface_mock.is_admin.return_value=True
+        interface_mock.is_user_admin.return_value=True
 
         #act
-        response = interactor.get_projects_wrapper(
+        project_details = interactor.get_projects_wrapper(
             user_id=user_id,
             offset=0,
             limit=1,
@@ -46,19 +45,17 @@ class TestGetProjects:
             )
 
         #assert
-
         project_storage.get_projects_for_admin.assert_called_once_with(
                 user_id=user_id,
                 offset=0,
                 limit=1)
-
         project_presenter.get_projects_response.assert_called_once_with(
             total_projects_count=total_projects_count,
             all_projects_details_dtos=projects_dtos)
-        assert response == get_projects_response
-    
+        snapshot.assert_match(project_details, 'project_details')
+
     @patch.object(UserService, 'interface')
-    def test_get_projects_for_normal_user(self, interface_mock):
+    def test_get_projects_for_normal_user(self, interface_mock, snapshot):
 
         user_id = 1
         total_projects_count = 2
@@ -72,11 +69,11 @@ class TestGetProjects:
             = total_projects_count
         project_presenter.get_projects_response\
             .return_value = get_projects_response
-        
-        interface_mock.is_admin.return_value = False
+
+        interface_mock.is_user_admin.return_value = False
         #act
 
-        response = interactor.get_projects_wrapper(
+        project_details = interactor.get_projects_wrapper(
             user_id=user_id,
                 offset=0,
                 limit=1,
@@ -91,4 +88,4 @@ class TestGetProjects:
         project_presenter.get_projects_response.assert_called_once_with(
             total_projects_count=total_projects_count,
             all_projects_details_dtos=projects_dtos)
-        assert response == get_projects_response
+        snapshot.assert_match(project_details, 'project_details')

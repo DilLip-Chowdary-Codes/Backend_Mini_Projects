@@ -115,17 +115,13 @@ class TaskStorageImplementation(TaskStorageInterface):
         project_utils = ProjectStorageImplementation()
         projec_details_dto = project_utils\
             ._convert_project_object_to_project_details_dto(task_obj.project)
-        adapter_service = get_service_adapter()
-        user_service = adapter_service.user_service
-
-        user_details_dto = user_service.get_user_dto(task_obj.assignee_id)
 
         task_details_dto = TaskDetailsDto(
             task_id=task_obj.id,
             project=projec_details_dto,
             issue_type=task_obj.issue_type,
             title=task_obj.title,
-            assignee_id=user_details_dto,
+            assignee_id=task_obj.assignee_id,
             description=task_obj.description,
             state=task_obj.state.name
             )

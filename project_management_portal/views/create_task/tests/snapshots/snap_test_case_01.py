@@ -10,22 +10,12 @@ snapshots = Snapshot()
 snapshots['TestCase01CreateTaskAPITestCase::test_case status'] = 201
 
 snapshots['TestCase01CreateTaskAPITestCase::test_case body'] = {
-    'assignee_id': {
-        'phone_no': '9999999999',
-        'profile_pic': 'http://www.google.com',
-        'user_id': 1,
-        'username': 'username_1'
-    },
+    'assignee_id': 1,
     'description': 'string',
     'issue_type': 'BUG',
     'project': {
         'created_at': '2020-06-26 00:00:00',
-        'created_by': {
-            'phone_no': '9999999999',
-            'profile_pic': 'http://www.google.com',
-            'user_id': 1,
-            'username': 'username_1'
-        },
+        'created_by': 1,
         'description': 'project_1_description',
         'developers': [
             1,
@@ -47,7 +37,7 @@ snapshots['TestCase01CreateTaskAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '556',
+        '346',
         'Content-Length'
     ],
     'content-type': [

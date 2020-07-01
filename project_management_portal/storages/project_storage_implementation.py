@@ -8,8 +8,6 @@ from project_management_portal.models\
 from project_management_portal.dtos\
     import ProjectDto, UserDto, ProjectDetailsDto, TransitionDto,\
            TransitionDetailsDto, StateDetailsDto, ChecklistDetailsDto
-from project_management_portal.adapters.service_adapter\
-    import get_service_adapter
 
 from project_management_portal.interactors.storages.project_storage_interface\
     import ProjectStorageInterface
@@ -65,10 +63,10 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             created_by_id=user_id
             )
 
-        developers_user_ids = project_dto.developer_ids
+        developer_ids = project_dto.developer_ids
         developers_list = [
             Developer(user_id=developer_id, project_id=project_obj.id)
-            for developer_id in developers_user_ids
+            for developer_id in developer_ids
             ]
 
         Developer.objects.bulk_create(developers_list)
@@ -82,7 +80,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
                                       user_id: int,
                                       offset: int,
                                       limit: int) -> List[ProjectDto]:
-        
+
         transition_set = Transition.objects\
             .select_related('from_state', 'to_state')
 
@@ -111,7 +109,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
                                      user_id: int,
                                      offset: int,
                                      limit: int) -> List[ProjectDto]:
-        
+
         transition_set = Transition.objects\
             .select_related('from_state', 'to_state')
 
@@ -124,9 +122,6 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             .prefetch_related(Prefetch('workflow', queryset=workflow))\
             .filter(created_by_id=user_id)\
             .order_by('-created_at')[offset: offset + limit]
-        
-        print("\n"*10,"proooooooooo")
-        print(admin_projects,"\n"*10)
 
         project_dtos = [
             self._convert_project_object_to_project_details_dto(project)
@@ -170,7 +165,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
 
         from_state_id = get_transition_details_query_dto.from_state_id
         to_state_id = get_transition_details_query_dto.to_state_id
-        
+
         transition = Transition.objects\
             .select_related('from_state', 'to_state')\
             .prefetch_related('checklist')\
@@ -204,21 +199,12 @@ class ProjectStorageImplementation(ProjectStorageInterface):
     def _convert_project_object_to_project_details_dto(self,
                                        project: object
                                       ) -> ProjectDetailsDto:
-        adapter_service = get_service_adapter()
-        user_service = adapter_service.user_service
 
-        creator_details = user_service.get_user_dto(project.created_by_id)
         project_developers_ids = Developer.objects\
                 .filter(project_id=project.id)\
                 .values_list('user_id', flat=True)
 
         project_developers_ids = list(set(project_developers_ids))
-    
-        #TODO Remove This
-        # project_developers_dtos = [
-        #     user_service.get_user_dto(developer_id)
-        #     for developer_id in project_developers_ids
-        #     ]
 
         project_details_dto = ProjectDetailsDto(
             project_id=project.id,
@@ -226,7 +212,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             description=project.description,
             workflow=project.workflow.name,
             project_type=project.project_type,
-            created_by=creator_details,
+            created_by_id=project.created_by_id,
             created_at=str(project.created_at),
             developer_ids=project_developers_ids
             )

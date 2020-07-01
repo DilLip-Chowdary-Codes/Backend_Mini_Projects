@@ -13,12 +13,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
     'projects': [
         {
             'created_at': '2020-06-26 00:00:00',
-            'created_by': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'created_by': 1,
             'description': 'project_1_description',
             'developers': [
                 1
@@ -30,12 +25,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
         },
         {
             'created_at': '2020-06-26 00:00:00',
-            'created_by': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'created_by': 1,
             'description': 'project_2_description',
             'developers': [
                 1
@@ -47,12 +37,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
         },
         {
             'created_at': '2020-06-26 00:00:00',
-            'created_by': {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 1,
-                'username': 'username'
-            },
+            'created_by': 1,
             'description': 'project_3_description',
             'developers': [
                 1
@@ -72,7 +57,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case header_param
         'en'
     ],
     'content-length': [
-        '876',
+        '660',
         'Content-Length'
     ],
     'content-type': [

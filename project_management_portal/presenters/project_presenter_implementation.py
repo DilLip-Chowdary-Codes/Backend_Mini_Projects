@@ -42,8 +42,8 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
             project_details_dto: ProjectDetailsDto
             ):
 
-        creator_details = self._convert_user_dto_to_dict(
-            user_dto=project_details_dto.created_by)
+        # creator_details = self._convert_user_dto_to_dict(
+        #     user_dto=project_details_dto.created_by_id)
 
         project_developer_ids = project_details_dto.developer_ids
 
@@ -53,7 +53,7 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
             "description": project_details_dto.description,
             "workflow": project_details_dto.workflow,
             "project_type": project_details_dto.project_type,
-            "created_by": creator_details,
+            "created_by": project_details_dto.created_by_id,
             "created_at": str(project_details_dto.created_at),
             "developers": project_developer_ids
         }

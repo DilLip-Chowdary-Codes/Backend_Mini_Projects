@@ -24,9 +24,9 @@ class ProjectDetailsDto:
     description: str
     workflow: str
     project_type: str
-    created_by: UserDto
+    created_by_id: int
     created_at: str
-    developer_ids: List[UserDto]
+    developer_ids: List[int]
 
 @dataclass
 class StateDto:
@@ -51,7 +51,7 @@ class TaskDetailsDto:
     project: ProjectDetailsDto
     issue_type: str
     title: str
-    assignee_id: UserDto
+    assignee_id: int
     description: str
     state: str
 

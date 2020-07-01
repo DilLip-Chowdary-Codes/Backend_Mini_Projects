@@ -17,9 +17,9 @@ snapshots['TestProjectStorage.test_validate_developer_for_project_with_valid_adm
 
 snapshots['TestProjectStorage.test_validate_developer_for_project_with_invalid_id is_developer_valid'] = False
 
-snapshots['TestProjectStorage.test_create_project project_details_dto'] = GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[1])')
+snapshots['TestProjectStorage.test_create_project project_details_dto'] = GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[1])')
 
-snapshots['TestProjectStorage.test_create_project_with_no_developers project_details_dto'] = GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[])')
+snapshots['TestProjectStorage.test_create_project_with_no_developers project_details_dto'] = GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[])')
 
 snapshots['TestProjectStorage.test_get_user_projects_count projects_count'] = 2
 
@@ -34,32 +34,32 @@ snapshots['TestProjectStorage.test_validate_transition_with_valid_transition is_
 snapshots['TestProjectStorage.test_validate_transition_with_invalid_transition is_transition_valid'] = False
 
 snapshots['TestProjectStorage.test_get_projects_for_user user_projects_details'] = [
-    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])'),
-    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
+    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])'),
+    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_user_with_limit_1 user_projects_details'] = [
-    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])')
+    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])')
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_user_with_offset_1 user_projects_details'] = [
-    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
+    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_user_with_offset_gt_total_ptojects user_projects_details'] = [
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_admin user_projects_details'] = [
-    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])'),
-    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
+    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])'),
+    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_admin_with_limit_1 user_projects_details'] = [
-    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])')
+    GenericRepr('ProjectDetailsDto(project_id=1, name=\'projectManagement\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[1, 2])')
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_admin_with_offset_1 user_projects_details'] = [
-    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by=UserDto(user_id=1, username=\'username_1\', profile_pic=\'http://www.google.com\', phone_no=\'9999999999\', is_admin=True), created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
+    GenericRepr('ProjectDetailsDto(project_id=2, name=\'projectManagement_2\', description="it\'s a blaw blaw blaw blaw  blaw blaw ", workflow=\'Workflow_1\', project_type=\'Classic Software\', created_by_id=1, created_at=\'2020-05-28 10:06:23\', developer_ids=[2])')
 ]
 
 snapshots['TestProjectStorage.test_get_projects_for_admin_with_offset_gt_total_projects user_projects_details'] = [

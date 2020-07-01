@@ -9,73 +9,6 @@ snapshots = Snapshot()
 
 snapshots['TestTaskPresenterImplementation.test_raise_invalid_task_id_exception error_message'] = 'Invalid Task, try with valid task'
 
-snapshots['TestTaskPresenterImplementation.test_get_create_task_response task_details'] = {
-    'assignee_id': {
-        'phone_no': '8739835635',
-        'profile_pic': 'http://www.google.com/',
-        'user_id': 1,
-        'username': 'username_1'
-    },
-    'description': 'string',
-    'issue_type': 'Enhancement',
-    'project': {
-        'created_at': '2020-05-28 10:06:23',
-        'created_by': {
-            'phone_no': '8739835635',
-            'profile_pic': 'http://www.google.com/',
-            'user_id': 1,
-            'username': 'username_1'
-        },
-        'description': "it's a blaw blaw blaw blaw  blaw blaw ",
-        'developers': [
-            2
-        ],
-        'name': 'projectManagement',
-        'project_id': 1,
-        'project_type': 'Classic Software',
-        'workflow': ''
-    },
-    'state': 'In Progress',
-    'task_id': 1,
-    'title': 'Optimizing DB'
-}
-
-snapshots['TestTaskPresenterImplementation.test_get_tasks_response tasks_details'] = {
-    'project': {
-        'created_at': '2020-05-28 10:06:23',
-        'created_by': {
-            'phone_no': '8739835635',
-            'profile_pic': 'http://www.google.com/',
-            'user_id': 1,
-            'username': 'username_1'
-        },
-        'description': "it's a blaw blaw blaw blaw  blaw blaw ",
-        'developers': [
-            2
-        ],
-        'name': 'projectManagement',
-        'project_id': 1,
-        'project_type': 'Classic Software',
-        'workflow': ''
-    },
-    'tasks': [
-        {
-            'assignee_id': {
-                'phone_no': '8739835635',
-                'profile_pic': 'http://www.google.com/',
-                'user_id': 1,
-                'username': 'username_1'
-            },
-            'description': 'string',
-            'issue_type': 'Enhancement',
-            'state': 'In Progress',
-            'task_id': 1,
-            'title': 'Optimizing DB'
-        }
-    ],
-    'total_tasks': 1
-}
-
 snapshots['TestTaskPresenterImplementation.test_get_task_states_response task_states'] = {
     'states': [
         {
@@ -97,3 +30,50 @@ snapshots['TestTaskPresenterImplementation.test_get_task_states_response_with_no
 }
 
 snapshots['TestTaskPresenterImplementation.test_raise_invalid_state_id_exception error_message'] = 'Invalid state_id, try with valid state_id'
+
+snapshots['TestTaskPresenterImplementation.test_get_create_task_response task_details'] = {
+    'assignee_id': 1,
+    'description': 'string',
+    'issue_type': 'Enhancement',
+    'project': {
+        'created_at': '2020-05-28 10:06:23',
+        'created_by': 1,
+        'description': "it's a blaw blaw blaw blaw  blaw blaw ",
+        'developers': [
+            2
+        ],
+        'name': 'projectManagement',
+        'project_id': 1,
+        'project_type': 'Classic Software',
+        'workflow': ''
+    },
+    'state': 'In Progress',
+    'task_id': 1,
+    'title': 'Optimizing DB'
+}
+
+snapshots['TestTaskPresenterImplementation.test_get_tasks_response tasks_details'] = {
+    'project': {
+        'created_at': '2020-05-28 10:06:23',
+        'created_by': 1,
+        'description': "it's a blaw blaw blaw blaw  blaw blaw ",
+        'developers': [
+            2
+        ],
+        'name': 'projectManagement',
+        'project_id': 1,
+        'project_type': 'Classic Software',
+        'workflow': ''
+    },
+    'tasks': [
+        {
+            'assignee_id': 1,
+            'description': 'string',
+            'issue_type': 'Enhancement',
+            'state': 'In Progress',
+            'task_id': 1,
+            'title': 'Optimizing DB'
+        }
+    ],
+    'total_tasks': 1
+}
