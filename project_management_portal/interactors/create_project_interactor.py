@@ -5,13 +5,15 @@ from project_management_portal.interactors.presenters\
     .project_presenter_interface import ProjectPresenterInterface
 from project_management_portal.dtos import ProjectDto
 from project_management_portal.exceptions import InvalidWorkFlow
+from project_management_portal.adapters.service_adapter\
+    import get_service_adapter
 
 class CreateProjectInteractor:
     def __init__(self,
                  storage: ProjectStorageInterface
                 ):
         self.storage = storage
-    
+
     def create_project_wrapper(self, user_id: int, project_data: Dict,
                                presenter: ProjectPresenterInterface):
 
@@ -36,6 +38,11 @@ class CreateProjectInteractor:
             raise InvalidWorkFlow()
 
         project_dto = self._convert_project_data_to_dto(project_data)
+        # adapter = get_service_adapter()
+        # user_service = adapter.user_service
+        # developer_ids = project_dto.developer_ids
+        # developers_dtos = user_service.get_user_dtos(
+        #     user_ids=developer_ids)
 
         project_details_dto = self.storage.create_project(
             user_id=user_id,
@@ -51,6 +58,6 @@ class CreateProjectInteractor:
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developers=project_data.get('developers')
+            developer_ids=project_data.get('developers')
             )
         return project_dto

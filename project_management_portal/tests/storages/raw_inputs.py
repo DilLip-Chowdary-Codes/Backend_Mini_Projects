@@ -17,7 +17,7 @@ user_dto = UserDto(
   user_id=1,
   username="username_1",
   profile_pic="http://www.google.com",
-  phone_no="9782346742",
+  phone_no="9999999999",
   is_admin=True)
 
 project_dto = ProjectDto(
@@ -25,14 +25,14 @@ project_dto = ProjectDto(
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developers=project_data.get('developers')
+            developer_ids=project_data.get('developers')
             )
 project_with_no_developers_dto = ProjectDto(
             name=project_data.get('name'),
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developers=[]
+            developer_ids=[]
             )
 
 projects_dtos =[
@@ -41,7 +41,7 @@ projects_dtos =[
     description=project_data.get('description'),
     workflow_id=project_data.get('workflow_id'),
     project_type=project_data.get('project_type'),
-    developers=project_data.get('developers')
+    developer_ids=project_data.get('developers')
     )
     ]
 
@@ -53,7 +53,7 @@ project_details_dto = ProjectDetailsDto(
     project_type="Classic Software",
     created_by=user_dto,
     created_at="2020-05-28 10:06:23",
-    developers= [user_dto])
+    developer_ids= [user_dto.user_id])
 
 project_details_with_no_developers_dto = ProjectDetailsDto(
     project_id=1,
@@ -63,7 +63,7 @@ project_details_with_no_developers_dto = ProjectDetailsDto(
     project_type="Classic Software",
     created_by=user_dto,
     created_at="2020-05-28 10:06:23",
-    developers= [])
+    developer_ids= [])
 
 projects_details_dtos = [project_details_dto]
 
@@ -103,7 +103,7 @@ task_project_dto = ProjectDetailsDto(
   project_type="Classic Software",
   created_by=user_dto,
   created_at="2020-05-28 10:06:23",
-  developers=[developer_dto]
+  developer_ids=[developer_dto]
   )
 
 task_dto = TaskDto(
@@ -118,7 +118,7 @@ task_details_dto = TaskDetailsDto(
   project=task_project_dto,
   issue_type="Enhancement",
   title="Optimizing DB",
-  assignee=task_user_dto,
+  assignee_id=task_user_dto,
   description="string",
   state=state_dto
   )

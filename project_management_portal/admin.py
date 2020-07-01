@@ -1,7 +1,7 @@
 # your django admin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Project, State,\
+from .models import Project, State,\
                     Transition, Workflow, Task, Checklist
 
 class UserAdmin(BaseUserAdmin):
@@ -13,6 +13,12 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
-DataModels = [Project, State, Transition, Workflow, Task, Checklist]
-admin.site.register(User, UserAdmin)
+DataModels = [Project,
+              State,
+              Transition,
+              Workflow,
+              Task,
+              Checklist
+             ]
+
 admin.site.register(DataModels)

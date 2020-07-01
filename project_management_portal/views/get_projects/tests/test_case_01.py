@@ -34,8 +34,8 @@ class TestCase01GetProjectsAPIForNormalUserTestCase(CustomTestUtils):
     def setupUser(self, username, password):
         super(TestCase01GetProjectsAPIForNormalUserTestCase, self).setupUser(
                 username, password)
-        admin = self.create_user_admin()
-        self.create_projects(user=admin)
+        # admin = self.create_user_admin()
+        self.create_projects(user_id=1)
 
     def test_case(self):
         self.default_test_case()

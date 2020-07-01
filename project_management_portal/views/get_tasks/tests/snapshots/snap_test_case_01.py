@@ -20,18 +20,8 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
         },
         'description': 'project_1_description',
         'developers': [
-            {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 2,
-                'username': 'user_1'
-            },
-            {
-                'phone_no': '',
-                'profile_pic': '',
-                'user_id': 3,
-                'username': 'user_2'
-            }
+            1,
+            2
         ],
         'name': 'project_1',
         'project_id': 1,
@@ -40,7 +30,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
     },
     'tasks': [
         {
-            'assignee': {
+            'assignee_id': {
                 'phone_no': '',
                 'profile_pic': '',
                 'user_id': 1,
@@ -53,7 +43,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_1'
         },
         {
-            'assignee': {
+            'assignee_id': {
                 'phone_no': '',
                 'profile_pic': '',
                 'user_id': 1,
@@ -66,7 +56,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_2'
         },
         {
-            'assignee': {
+            'assignee_id': {
                 'phone_no': '',
                 'profile_pic': '',
                 'user_id': 1,
@@ -79,7 +69,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_3'
         },
         {
-            'assignee': {
+            'assignee_id': {
                 'phone_no': '',
                 'profile_pic': '',
                 'user_id': 1,
@@ -92,7 +82,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case body'] = {
             'title': 'task_4'
         },
         {
-            'assignee': {
+            'assignee_id': {
                 'phone_no': '',
                 'profile_pic': '',
                 'user_id': 1,
@@ -114,7 +104,7 @@ snapshots['TestCase01GetTasksAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '1473',
+        '1348',
         'Content-Length'
     ],
     'content-type': [

@@ -3,12 +3,13 @@ from project_management_portal import models
 from project_management_portal.constants.enums import Project_Type
 from project_management_portal.constants.enums import IssueType
 
-class UserFactory(factory.django.DjangoModelFactory):
+class DeveloperFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = models.User
+        model = models.Developer
 
-    username = factory.Sequence(lambda n: f'user_{n}')
+    user_id = factory.Sequence(lambda n: n)
+    project_id = factory.Sequence(lambda n: n)
 
 class StateFactory(factory.django.DjangoModelFactory):
 
@@ -72,49 +73,39 @@ class WorkflowFactory(factory.django.DjangoModelFactory):
             for transition in extracted:
                 self.transitions.add(transition)
 
-    created_by = factory.Iterator(models.User.objects.all())
+    created_by_id = factory.Sequence(lambda n: n)
 
 class ProjectFactory(factory.django.DjangoModelFactory):
-    
+
     class Meta:
         model = models.Project
-        
+
     name = factory.Sequence(lambda n: f'project_{n}')
     description = factory.Sequence(lambda n: f'project_{n}_description')
     workflow = factory.Iterator(models.Workflow.objects.all())
     project_type = factory.Iterator(
         [project_type.value for project_type in Project_Type])
-    created_by = factory.Iterator(models.User.objects.all())
-    
-    @factory.post_generation
-    def developers(self, create, extracted, **kwargs):
-
-        if not create:
-            return
-
-        if extracted:
-            for developer in extracted:
-                self.developers.add(developer)
+    created_by_id = factory.Sequence(lambda n: n)
 
 class TaskFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Task
-    
+
     project = factory.Iterator(models.Project.objects.all())
     issue_type = factory.Iterator(
         issue_type.value for issue_type in IssueType
     )
     title = factory.Sequence(lambda n: f'task_{n}')
-    assignee = factory.Iterator(models.User.objects.all())
+    assignee_id = factory.Sequence(lambda n: n)
     description = factory.Sequence(lambda n: f'description_{n}')
     state = factory.Iterator(models.State.objects.all())
 
     @factory.post_generation
     def conditions_satisfied(self, create, extracted, **kwargs):
-        
+
         if not create:
             return
-        
+
         if extracted:
             for checkpoint in extracted:
                 self.conditions_satisfied.add(checkpoint)

@@ -1,12 +1,11 @@
-from .user import User
-from .project import Project
+from .project import Project, Developer
 from .workflow import Workflow
 from .transition import Transition
 from .state import State
 from .task import Task
 from .checklist import Checklist
 
-__all__ = ["User", "Project", "Workflow",
+__all__ = ["Developer", "Project", "Workflow",
     "Transition", "State", "Task", "Checklist"]
 
 # class DummyModel(AbstractDateTimeModel):

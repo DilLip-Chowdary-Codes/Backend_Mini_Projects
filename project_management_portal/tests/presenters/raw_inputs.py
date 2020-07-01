@@ -26,7 +26,7 @@ project_dto = ProjectDto(
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developers=project_data.get('developers')
+            developer_ids=project_data.get('developers')
             )
 
 projects_dtos =[
@@ -35,7 +35,7 @@ projects_dtos =[
     description=project_data.get('description'),
     workflow_id=project_data.get('workflow_id'),
     project_type=project_data.get('project_type'),
-    developers=project_data.get('developers')
+    developer_ids=project_data.get('developers')
     )
     ]
 
@@ -47,7 +47,7 @@ project_details_dto = ProjectDetailsDto(
     project_type="Classic Software",
     created_by=user_dto,
     created_at="2020-05-28 10:06:23 AM",
-    developers= [user_dto])
+    developer_ids=[user_dto.user_id])
 
 projects_details_dtos = [project_details_dto]
 
@@ -93,7 +93,7 @@ task_project_dto = ProjectDetailsDto(
   project_type="Classic Software",
   created_by=task_user_dto,
   created_at="2020-05-28 10:06:23",
-  developers=[developer_dto]
+  developer_ids=[developer_dto.user_id]
   )
 
 task_details_dto = TaskDetailsDto(
@@ -101,7 +101,7 @@ task_details_dto = TaskDetailsDto(
   project=task_project_dto,
   issue_type="Enhancement",
   title="Optimizing DB",
-  assignee=task_user_dto,
+  assignee_id=task_user_dto,
   description="string",
   state=state_dto.name
   )

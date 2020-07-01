@@ -45,12 +45,7 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
         creator_details = self._convert_user_dto_to_dict(
             user_dto=project_details_dto.created_by)
 
-        project_developers_dtos = project_details_dto.developers
-
-        developers_details = [
-            self._convert_user_dto_to_dict(developer_dto)
-            for developer_dto in project_developers_dtos
-            ]
+        project_developer_ids = project_details_dto.developer_ids
 
         response = {
             "project_id": project_details_dto.project_id,
@@ -60,7 +55,7 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
             "project_type": project_details_dto.project_type,
             "created_by": creator_details,
             "created_at": str(project_details_dto.created_at),
-            "developers": developers_details
+            "developers": project_developer_ids
         }
         return response
 

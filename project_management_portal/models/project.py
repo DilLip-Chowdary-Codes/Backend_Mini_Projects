@@ -1,5 +1,4 @@
 from django.db import models
-from .user import User
 from .state import State
 from .transition import Transition
 from .workflow import Workflow
@@ -14,11 +13,13 @@ class Project(models.Model):
         max_length=100,
         choices=Project_Type.get_list_of_tuples()
         )
-    created_by = models.ForeignKey(User,
-                                   on_delete=models.CASCADE,
-                                   related_name='creator')
+    created_by_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now=True)
-    developers = models.ManyToManyField(User)
-    
+
     def __str__(self):
         return self.name
+
+class Developer(models.Model):
+
+    user_id = models.IntegerField()
+    project_id = models.IntegerField()

@@ -48,7 +48,7 @@ project_dto = ProjectDto(
   description="it's a blaw blaw blaw blaw  blaw blaw ",
   workflow_id=1,
   project_type="Classic Software",
-  developers=[1]
+  developer_ids=[1]
   )
 
 project_details_dto = ProjectDetailsDto(
@@ -59,7 +59,7 @@ project_details_dto = ProjectDetailsDto(
   project_type="Classic Software",
   created_by=user_dto,
   created_at="2020-05-28 10:06:23",
-  developers=[developer_dto]
+  developer_ids=[developer_dto]
   )
 
 task_dto = TaskDto(
@@ -74,7 +74,7 @@ task_details_dto = TaskDetailsDto(
   project=project_details_dto,
   issue_type="Enhancement",
   title="Optimizing DB",
-  assignee=user_dto,
+  assignee_id=user_dto,
   description="string",
   state=state_dto
   )

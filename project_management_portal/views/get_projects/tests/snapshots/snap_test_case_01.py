@@ -21,18 +21,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
             },
             'description': 'project_1_description',
             'developers': [
-                {
-                    'phone_no': '',
-                    'profile_pic': '',
-                    'user_id': 1,
-                    'username': 'username'
-                },
-                {
-                    'phone_no': '',
-                    'profile_pic': '',
-                    'user_id': 2,
-                    'username': 'user_1'
-                }
+                1
             ],
             'name': 'project_1',
             'project_id': 1,
@@ -49,18 +38,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
             },
             'description': 'project_2_description',
             'developers': [
-                {
-                    'phone_no': '',
-                    'profile_pic': '',
-                    'user_id': 1,
-                    'username': 'username'
-                },
-                {
-                    'phone_no': '',
-                    'profile_pic': '',
-                    'user_id': 2,
-                    'username': 'user_1'
-                }
+                1
             ],
             'name': 'project_2',
             'project_id': 2,
@@ -77,18 +55,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
             },
             'description': 'project_3_description',
             'developers': [
-                {
-                    'phone_no': '',
-                    'profile_pic': '',
-                    'user_id': 1,
-                    'username': 'username'
-                },
-                {
-                    'phone_no': '',
-                    'profile_pic': '',
-                    'user_id': 2,
-                    'username': 'user_1'
-                }
+                1
             ],
             'name': 'project_3',
             'project_id': 3,
@@ -96,7 +63,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
             'workflow': 'workflow_1'
         }
     ],
-    'total_projects': 3
+    'total_projects': 4
 }
 
 snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case header_params'] = {
@@ -105,7 +72,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case header_param
         'en'
     ],
     'content-length': [
-        '1311',
+        '876',
         'Content-Length'
     ],
     'content-type': [

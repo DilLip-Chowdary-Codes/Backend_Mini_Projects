@@ -14,6 +14,8 @@ from project_management_portal.models\
 
 from project_management_portal.storages.project_storage_implementation\
         import ProjectStorageImplementation
+from project_management_portal.adapters.service_adapter\
+    import get_service_adapter
 
 class TaskStorageImplementation(TaskStorageInterface):
 
@@ -56,14 +58,12 @@ class TaskStorageImplementation(TaskStorageInterface):
             )
 
         project = Project.objects\
-            .select_related('created_by')\
             .prefetch_related(
-                Prefetch('workflow', queryset=workflow),
-                Prefetch('developers')
+                Prefetch('workflow', queryset=workflow)
                 )
 
         tasks = Task.objects\
-            .select_related('assignee', 'state')\
+            .select_related('state')\
             .prefetch_related(
                 Prefetch('project', queryset=project))\
             .filter(project_id=project_id)\
@@ -115,16 +115,17 @@ class TaskStorageImplementation(TaskStorageInterface):
         project_utils = ProjectStorageImplementation()
         projec_details_dto = project_utils\
             ._convert_project_object_to_project_details_dto(task_obj.project)
+        adapter_service = get_service_adapter()
+        user_service = adapter_service.user_service
 
-        user_details_dto = project_utils._convert_user_object_to_dto(
-            task_obj.assignee)
+        user_details_dto = user_service.get_user_dto(task_obj.assignee_id)
 
         task_details_dto = TaskDetailsDto(
             task_id=task_obj.id,
             project=projec_details_dto,
             issue_type=task_obj.issue_type,
             title=task_obj.title,
-            assignee=user_details_dto,
+            assignee_id=user_details_dto,
             description=task_obj.description,
             state=task_obj.state.name
             )

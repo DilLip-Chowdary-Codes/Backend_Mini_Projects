@@ -4,10 +4,12 @@ from django.db.models import Prefetch
 from oauth2_provider.models import AccessToken, RefreshToken
 from common.dtos import UserAuthTokensDTO
 from project_management_portal.models\
-    import User, Project, Workflow, Transition
+    import Project, Developer, Workflow, Transition
 from project_management_portal.dtos\
     import ProjectDto, UserDto, ProjectDetailsDto, TransitionDto,\
            TransitionDetailsDto, StateDetailsDto, ChecklistDetailsDto
+from project_management_portal.adapters.service_adapter\
+    import get_service_adapter
 
 from project_management_portal.interactors.storages.project_storage_interface\
     import ProjectStorageInterface
@@ -18,10 +20,6 @@ class ProjectStorageImplementation(ProjectStorageInterface):
         is_workflow_valid = Workflow.objects.filter(id=workflow_id).exists()
         return is_workflow_valid
 
-    def validate_admin_scope(self, user_id: int):
-        is_admin = User.objects.get(user_id=user_id).is_admin
-        return is_admin
-
     def validate_project_id(self, project_id: int):
         project = Project.objects.filter(id=project_id).first()
         project_exists = project
@@ -29,7 +27,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             project_dto = self._convert_project_object_to_dto(project)
         else:
             project_dto = None
-        print("-",project_dto)
+
         return project_dto
 
     def validate_developer_for_project(
@@ -37,9 +35,9 @@ class ProjectStorageImplementation(ProjectStorageInterface):
         user_id: int,
         project_id: int) -> bool:
 
-        is_developer = Project.objects.filter(
-            id=project_id,
-            developers__user_id=user_id).exists()
+        is_developer = Developer.objects.filter(
+            project_id=project_id,
+            user_id=user_id).exists()
         is_admin = Project.objects.filter(
             id=project_id,
             created_by_id=user_id).exists()
@@ -66,10 +64,15 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             project_type=project_dto.project_type,
             created_by_id=user_id
             )
-        developers_user_ids = project_dto.developers
-        developers_objs = User.objects.filter(user_id__in=developers_user_ids)
 
-        project_obj.developers.set(developers_objs)
+        developers_user_ids = project_dto.developer_ids
+        developers_list = [
+            Developer(user_id=developer_id, project_id=project_obj.id)
+            for developer_id in developers_user_ids
+            ]
+
+        Developer.objects.bulk_create(developers_list)
+
         project_details_dto = self\
             ._convert_project_object_to_project_details_dto(project_obj)
 
@@ -87,15 +90,15 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             Prefetch('states'),
             Prefetch('transitions', queryset=transition_set)
             )
+        project_ids = Developer.objects\
+            .filter(user_id=user_id)\
+            .distinct()\
+            .values_list('project_id', flat=True)
 
         user_projects = Project.objects\
-            .select_related('created_by')\
-            .prefetch_related(
-                Prefetch('workflow', queryset=workflow),
-                Prefetch('developers'))\
-            .filter(developers__user_id=user_id)\
+            .prefetch_related(Prefetch('workflow', queryset=workflow))\
+            .filter(id__in=project_ids)\
             .order_by('-created_at')[offset: offset + limit]
-
 
         project_dtos = [
             self._convert_project_object_to_project_details_dto(project)
@@ -118,12 +121,12 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             )
 
         admin_projects = Project.objects\
-            .select_related('created_by')\
-            .prefetch_related(
-                Prefetch('workflow', queryset=workflow),
-                Prefetch('developers'))\
+            .prefetch_related(Prefetch('workflow', queryset=workflow))\
             .filter(created_by_id=user_id)\
             .order_by('-created_at')[offset: offset + limit]
+        
+        print("\n"*10,"proooooooooo")
+        print(admin_projects,"\n"*10)
 
         project_dtos = [
             self._convert_project_object_to_project_details_dto(project)
@@ -134,8 +137,9 @@ class ProjectStorageImplementation(ProjectStorageInterface):
 
     def get_user_projects_count(self, user_id):
 
-        projects_count = Project.objects.filter(
-            developers__user_id=user_id).count()
+        projects_count = Developer.objects.filter(user_id=user_id)\
+            .distinct().count()
+
         return projects_count
 
     def get_admin_projects_count(self, user_id):
@@ -200,13 +204,21 @@ class ProjectStorageImplementation(ProjectStorageInterface):
     def _convert_project_object_to_project_details_dto(self,
                                        project: object
                                       ) -> ProjectDetailsDto:
-        creator_details = self._convert_user_object_to_dto(project.created_by)
-        project_developers = project.developers.all()
+        adapter_service = get_service_adapter()
+        user_service = adapter_service.user_service
 
-        project_developers_dtos = [
-            self._convert_user_object_to_dto(developer)
-            for developer in project_developers
-            ]
+        creator_details = user_service.get_user_dto(project.created_by_id)
+        project_developers_ids = Developer.objects\
+                .filter(project_id=project.id)\
+                .values_list('user_id', flat=True)
+
+        project_developers_ids = list(set(project_developers_ids))
+    
+        #TODO Remove This
+        # project_developers_dtos = [
+        #     user_service.get_user_dto(developer_id)
+        #     for developer_id in project_developers_ids
+        #     ]
 
         project_details_dto = ProjectDetailsDto(
             project_id=project.id,
@@ -216,21 +228,10 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             project_type=project.project_type,
             created_by=creator_details,
             created_at=str(project.created_at),
-            developers=project_developers_dtos
+            developer_ids=project_developers_ids
             )
 
         return project_details_dto
-
-    @staticmethod
-    def _convert_user_object_to_dto(user):
-        user_dto = UserDto(
-            user_id=user.user_id,
-            username=user.username,
-            profile_pic=user.profile_pic,
-            phone_no=user.phone_no,
-            is_admin=user.is_admin
-            )
-        return user_dto
 
     @staticmethod
     def _convert_transition_object_to_dto(transition):

@@ -1,6 +1,5 @@
 from django.db import models
 from .state import State
-from .user import User
 from .transition import Transition
 
 class Workflow(models.Model):
@@ -8,7 +7,7 @@ class Workflow(models.Model):
     states = models.ManyToManyField(State)
     transitions = models.ManyToManyField(Transition)
     created_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by_id = models.IntegerField()
 
     def __str__(self):
         return self.name

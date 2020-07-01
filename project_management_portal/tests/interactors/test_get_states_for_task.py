@@ -126,7 +126,6 @@ class TestGetStatesForTaskBasesOnCurrentState:
             import INVALID_PROJECT
 
         project_id = task_state_data['project_id']
-        user_id = task_state_data['user_id']
         task_storage = create_autospec(TaskStorageInterface)
         project_storage = create_autospec(ProjectStorageInterface)
         task_presenter = create_autospec(TaskPresenterInterface)
@@ -136,8 +135,6 @@ class TestGetStatesForTaskBasesOnCurrentState:
             task_storage=task_storage,
             project_storage=project_storage
             )
-        project_storage\
-            .validate_developer_for_project.return_value = True
         project_storage.validate_project_id.return_value = None
         project_presenter.raise_invalid_project_id_exception\
             .side_effect = NotFound(*INVALID_PROJECT)
@@ -152,16 +149,12 @@ class TestGetStatesForTaskBasesOnCurrentState:
 
         #assert
         assert str(error.value) == expected_error_msg
-        project_storage\
-            .validate_developer_for_project.assert_called_once_with(
-                user_id,
-                project_id)
         project_storage.validate_project_id.assert_called_once_with(
             project_id)
         project_presenter.raise_invalid_project_id_exception\
             .assert_called_once()
 
-    def test_get_states_for_task_with_(self):
+    def test_get_states_for_task_with_invalid_task_id(self):
 
         #arrange
         from .raw_inputs import project_dto, task_state_data

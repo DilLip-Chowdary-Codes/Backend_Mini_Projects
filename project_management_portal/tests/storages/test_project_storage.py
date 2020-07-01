@@ -1,108 +1,81 @@
 import pytest
+from unittest.mock import patch
 from freezegun import freeze_time
+
+from django_swagger_utils.drf_server.exceptions import NotFound
 from project_management_portal.storages.project_storage_implementation\
     import ProjectStorageImplementation
 from project_management_portal.tests.storages.raw_inputs\
     import project_dto, projects_dtos,\
             projects_details_dtos,\
             project_details_dto
+from project_management_portal.adapters.user_service\
+            import UserService
 
 @freeze_time("2020-05-28 10:06:23")
 @pytest.mark.django_db
 class TestProjectStorage:
 
-    def test_validate_workflow_id_with_valid_id(self, workflows):
+    def test_validate_workflow_id_with_valid_id(self, workflows, snapshot):
 
         #arrange
         storage = ProjectStorageImplementation()
         workflow_id = 1
-        expected_is_workflow_valid = True
 
         #act
         is_workflow_valid = storage.validate_workflow_id(
             workflow_id=workflow_id)
 
         #assert
-        assert is_workflow_valid == expected_is_workflow_valid
+        snapshot.assert_match(is_workflow_valid, 'is_workflow_valid')
 
-    def test_validate_workflow_id_with_invalid_id(self, workflows):
+    def test_validate_workflow_id_with_invalid_id(self, workflows, snapshot):
 
         #arrange
         storage = ProjectStorageImplementation()
         workflow_id = 100
-        expected_is_workflow_valid = False
 
         #act
         is_workflow_valid = storage.validate_workflow_id(
             workflow_id=workflow_id)
 
         #assert
-        assert is_workflow_valid == expected_is_workflow_valid
+        snapshot.assert_match(is_workflow_valid, 'is_workflow_valid')
 
-    def test_validate_admin_scope_valid_id(self, users):
-
-        #arrange
-        user = users[0]
-        user_id = user.user_id
-        storage = ProjectStorageImplementation()
-        expected_is_admin = True
-
-        #act
-        is_admin = storage.validate_admin_scope(user_id=user_id)
-
-        #assert
-        assert is_admin == expected_is_admin
-
-    def test_validate_admin_scope_invalid_id(self, users):
+    def test_validate_project_id_with_valid_id(self, projects, snapshot):
 
         #arrange
-        user = users[1]
-        user_id = user.user_id
-        storage = ProjectStorageImplementation()
-        expected_is_admin = False
-
-        #act
-        is_admin = storage.validate_admin_scope(user_id=user_id)
-
-        #assert
-        assert is_admin == expected_is_admin
-
-    def test_validate_project_id_with_valid_id(self, projects):
-
-        #arrange
-        from .expected_responses import project_dto
         storage = ProjectStorageImplementation()
         project_id = 1
-        expected_is_project_valid = project_dto
 
         #act
-        is_project_valid = storage.validate_project_id(
+        project_dto = storage.validate_project_id(
             project_id=project_id)
 
         #assert
-        assert is_project_valid == expected_is_project_valid
+        snapshot.assert_match(project_dto, 'project_dto')
 
-    def test_validate_project_id_with_invalid_id(self, projects):
+    def test_validate_project_id_with_invalid_id(self, projects, snapshot):
 
         #arrange
         storage = ProjectStorageImplementation()
         project_id = 100
-        expected_is_project_valid = None
 
         #act
-        is_project_valid = storage.validate_project_id(
+        project_dto = storage.validate_project_id(
             project_id=project_id)
 
         #assert
-        assert is_project_valid == expected_is_project_valid
+        snapshot.assert_match(project_dto, 'project_dto')
 
-    def test_validate_developer_for_project_with_valid_id(self, projects):
+    def test_validate_developer_for_project_with_valid_id(self, projects,
+                                                          snapshot
+                                                         ):
 
         #arrange
         storage = ProjectStorageImplementation()
         developer_user_id = 2
         project_id = 1
-        expected_is_developer_valid = True
 
         #act
         is_developer_valid = storage.validate_developer_for_project(
@@ -110,15 +83,16 @@ class TestProjectStorage:
             project_id=project_id)
 
         #assert
-        assert is_developer_valid == expected_is_developer_valid
+        snapshot.assert_match(is_developer_valid, 'is_developer_valid')
 
-    def test_validate_developer_for_project_with_valid_admin_id(self, projects):
+    def test_validate_developer_for_project_with_valid_admin_id(self,
+                                                                projects,
+                                                                snapshot):
 
         #arrange
         storage = ProjectStorageImplementation()
         admin_user_id = 1
         project_id = 1
-        expected_is_developer_valid = True
 
         #act
         is_developer_valid = storage.validate_developer_for_project(
@@ -126,15 +100,15 @@ class TestProjectStorage:
             project_id=project_id)
 
         #assert
-        assert is_developer_valid == expected_is_developer_valid
+        snapshot.assert_match(is_developer_valid, 'is_developer_valid')
 
-    def test_validate_developer_for_project_with_invalid_id(self, projects):
+    def test_validate_developer_for_project_with_invalid_id(self, projects,
+                                                            snapshot):
 
         #arrange
         storage = ProjectStorageImplementation()
         developer_user_id = 3
         project_id = 1
-        expected_is_developer_valid = False
 
         #act
         is_developer_valid = storage.validate_developer_for_project(
@@ -142,17 +116,19 @@ class TestProjectStorage:
             project_id=project_id)
 
         #assert
-        assert is_developer_valid == expected_is_developer_valid
+        snapshot.assert_match(is_developer_valid, 'is_developer_valid')
 
-    def test_create_project(self, users, workflows):
+    @patch.object(UserService, 'interface')
+    def test_create_project(self, interface_mock, workflows,
+                            user_admin_dto, snapshot):
 
         #arrange
         from project_management_portal.tests.storages.raw_inputs\
             import  project_details_dto
-        user = users[0]
-        user_id = user.user_id
+        user_id = 1
         storage = ProjectStorageImplementation()
-        expected_project_details_dto = project_details_dto
+
+        interface_mock.get_user_dto.return_value = user_admin_dto
 
         #act
         project_details_dto = storage.create_project(
@@ -161,91 +137,89 @@ class TestProjectStorage:
             )
 
         #assert
-        assert project_details_dto == expected_project_details_dto
+        snapshot.assert_match(project_details_dto, 'project_details_dto')
 
-    def test_create_project_with_no_developers(self, users, workflows):
+    def test_create_project_with_no_developers(self, workflows,
+                                               user_admin_dto,
+                                               snapshot):
 
         #arrange
         from .raw_inputs\
             import  project_details_with_no_developers_dto,\
                     project_with_no_developers_dto
         project_dto = project_with_no_developers_dto
-        user = users[0]
-        user_id = user.user_id
+        user_id = 1
         storage = ProjectStorageImplementation()
-        expected_project_details_dto = project_details_with_no_developers_dto
 
         #act
-        project_details_dto = storage.create_project(
-            user_id=user_id,
-            project_dto=project_dto
-            )
+        with patch.object(UserService, 'get_user_dto',
+                          return_value=user_admin_dto):
+
+            project_details_dto = storage.create_project(
+                user_id=user_id,
+                project_dto=project_dto
+                )
 
         #assert
-        assert project_details_dto == expected_project_details_dto
+        snapshot.assert_match(project_details_dto, 'project_details_dto')
 
-    def test_get_user_projects_count(self, projects):
+    def test_get_user_projects_count(self, projects, snapshot):
 
         #arrange
         user_id = 2
         storage = ProjectStorageImplementation()
-        expected_response = 2
 
         #act
         response = storage.get_user_projects_count(user_id)
 
         #assert
-        assert response == expected_response
+        snapshot.assert_match(response, 'projects_count')
 
-
-    def test_get_user_projects_count_with_no_projects(self, users):
+    def test_get_user_projects_count_with_no_projects(self, snapshot):
 
         #arrange
         user_id = 2
         storage = ProjectStorageImplementation()
-        expected_response = 0
 
         #act
         response = storage.get_user_projects_count(user_id)
 
         #assert
-        assert response == expected_response
+        snapshot.assert_match(response, 'projects_count')
 
-    def test_get_admin_projects_count(self, projects):
+    def test_get_admin_projects_count(self, projects, snapshot):
 
         #arrange
         user_id = 1
         storage = ProjectStorageImplementation()
-        expected_response = 2
 
         #act
         response = storage.get_admin_projects_count(user_id)
 
         #assert
-        assert response == expected_response
+        snapshot.assert_match(response, 'projects_count')
 
-
-    def test_get_admin_projects_count_with_no_projects(self, users):
+    def test_get_admin_projects_count_with_no_projects(self, snapshot):
 
         #arrange
         user_id = 1
         storage = ProjectStorageImplementation()
-        expected_response = 0
 
         #act
         response = storage.get_admin_projects_count(user_id)
 
         #assert
-        assert response == expected_response
+        snapshot.assert_match(response, 'projects_count')
 
-    def test_validate_transition_with_valid_transition(self, projects):
+    def test_validate_transition_with_valid_transition(self, projects,
+                                                       snapshot
+                                                      ):
 
         #arrange
         workflow_id = 1
         from_state_id = 1
         to_state_id = 2
         storage = ProjectStorageImplementation()
-        expected_response = True
 
         #act
         response = storage.validate_transition(
@@ -254,16 +228,17 @@ class TestProjectStorage:
             to_state_id)
 
         #assert
-        assert response == expected_response
+        snapshot.assert_match(response, 'is_transition_valid')
 
-    def test_validate_transition_with_invalid_transition(self, projects):
+    def test_validate_transition_with_invalid_transition(self, projects,
+                                                         snapshot
+                                                        ):
 
         #arrange
         workflow_id = 1
         from_state_id = 2
         to_state_id = 1
         storage = ProjectStorageImplementation()
-        expected_response = False
 
         #act
         response = storage.validate_transition(
@@ -272,16 +247,16 @@ class TestProjectStorage:
             to_state_id)
 
         #assert
-        assert response == expected_response
+        snapshot.assert_match(response, 'is_transition_valid')
 
-    def test_get_projects_for_user(self, projects):
+    @patch.object(UserService, 'interface')
+    def test_get_projects_for_user(self, interface_mock, projects,
+                                   user_admin_dto, snapshot):
 
         #arrange
-        from project_management_portal.tests.storages.expected_responses\
-            import user_projects_details_dtos
         user_id = 2
         storage = ProjectStorageImplementation()
-        expected_user_projects_details = user_projects_details_dtos
+        interface_mock.get_user_dto.return_value=user_admin_dto
 
         #act
         user_projects_details_dtos = storage.get_projects_for_user(
@@ -290,16 +265,19 @@ class TestProjectStorage:
             offset=0)
 
         #assert
-        assert user_projects_details_dtos == expected_user_projects_details
+        snapshot.assert_match(user_projects_details_dtos,
+                              'user_projects_details')
 
-    def test_get_projects_for_user_with_limit_1(self, projects):
+    @patch.object(UserService, 'interface')
+    def test_get_projects_for_user_with_limit_1(self, interface_mock,
+                                                projects, user_admin_dto,
+                                                snapshot
+                                               ):
 
         #arrange
-        from project_management_portal.tests.storages.expected_responses\
-            import user_projects_details_dtos
         user_id = 2
         storage = ProjectStorageImplementation()
-        expected_user_projects_details = [user_projects_details_dtos[0]]
+        interface_mock.get_user_dto.return_value = user_admin_dto
 
         #act
         user_projects_details_dtos = storage.get_projects_for_user(
@@ -308,18 +286,19 @@ class TestProjectStorage:
             offset=0)
 
         #assert
+        snapshot.assert_match(user_projects_details_dtos,
+                              'user_projects_details')
 
-
-        assert user_projects_details_dtos == expected_user_projects_details
-
-    def test_get_projects_for_user_with_offset_1(self, projects):
+    @patch.object(UserService, 'interface')
+    def test_get_projects_for_user_with_offset_1(self, interface_mock,
+                                                 projects, user_admin_dto,
+                                                 snapshot
+                                                ):
 
         #arrange
-        from project_management_portal.tests.storages.expected_responses\
-            import user_projects_details_dtos
         user_id = 2
         storage = ProjectStorageImplementation()
-        expected_user_projects_details = [user_projects_details_dtos[1]]
+        interface_mock.get_user_dto.return_value = user_admin_dto
 
         #act
         user_projects_details_dtos = storage.get_projects_for_user(
@@ -330,15 +309,17 @@ class TestProjectStorage:
         #assert
 
 
-        assert user_projects_details_dtos == expected_user_projects_details
+        snapshot.assert_match(user_projects_details_dtos,
+                              'user_projects_details')
 
+    @patch.object(UserService, 'interface')
     def test_get_projects_for_user_with_offset_gt_total_ptojects(
-        self, projects):
+        self, interface_mock, projects, user_dto, snapshot):
 
         #arrange
         user_id = 2
         storage = ProjectStorageImplementation()
-        expected_user_projects_details = []
+        interface_mock.get_user_dto.return_value=user_dto
 
         #act
         user_projects_details_dtos = storage.get_projects_for_user(
@@ -349,115 +330,108 @@ class TestProjectStorage:
         #assert
 
 
-        assert user_projects_details_dtos == expected_user_projects_details
+        snapshot.assert_match(user_projects_details_dtos,
+                              'user_projects_details')
 
-    def test_get_projects_for_admin(self, projects):
+    @patch.object(UserService, 'interface')
+    def test_get_projects_for_admin(self, interface_mock, projects,
+                                    user_admin_dto, snapshot):
 
         #arrange
         user_id = 1
         storage = ProjectStorageImplementation()
-        from project_management_portal.tests.storages.expected_responses\
-            import user_projects_details_dtos
-        expected_user_projects_details = user_projects_details_dtos
+        interface_mock.get_user_dto.return_value=user_admin_dto
 
         #act
-        user_projects_details_dtos = storage.get_projects_for_admin(
+        admin_projects_details_dtos = storage.get_projects_for_admin(
             user_id=user_id,
             limit=2,
             offset=0)
 
         #assert
 
-        print(user_projects_details_dtos)
-        print("\n", expected_user_projects_details)
+        snapshot.assert_match(admin_projects_details_dtos,
+                              'user_projects_details')
 
-        assert user_projects_details_dtos == expected_user_projects_details
-
-    def test_get_projects_for_admin_with_limit_1(self, projects):
+    @patch.object(UserService, 'interface')
+    def test_get_projects_for_admin_with_limit_1(self, interface_mock,
+                                                 projects, user_admin_dto,
+                                                 snapshot):
 
         #arrange
         user_id = 1
         storage = ProjectStorageImplementation()
-        from project_management_portal.tests.storages.expected_responses\
-            import user_projects_details_dtos
-        expected_user_projects_details = [user_projects_details_dtos[0]]
+        interface_mock.get_user_dto.return_value=user_admin_dto
 
         #act
-        user_projects_details_dtos = storage.get_projects_for_admin(
+        admin_projects_details_dtos = storage.get_projects_for_admin(
             user_id=user_id,
             limit=1,
             offset=0)
 
         #assert
 
-        print(user_projects_details_dtos)
-        print("\n", expected_user_projects_details)
+        snapshot.assert_match(admin_projects_details_dtos,
+                              'user_projects_details')
 
-        assert user_projects_details_dtos == expected_user_projects_details
-
-    def test_get_projects_for_admin_with_offset_1(self, projects):
+    @patch.object(UserService, 'interface')
+    def test_get_projects_for_admin_with_offset_1(self, interface_mock,
+                                                  projects, user_admin_dto,
+                                                  snapshot):
 
         #arrange
         user_id = 1
         storage = ProjectStorageImplementation()
-        from project_management_portal.tests.storages.expected_responses\
-            import user_projects_details_dtos
-        expected_user_projects_details = [user_projects_details_dtos[1]]
+        interface_mock.get_user_dto.return_value=user_admin_dto
 
         #act
-        user_projects_details_dtos = storage.get_projects_for_admin(
+        admin_projects_details_dtos = storage.get_projects_for_admin(
             user_id=user_id,
             limit=2,
             offset=1)
 
         #assert
 
-        print(user_projects_details_dtos)
-        print("\n", expected_user_projects_details)
+        snapshot.assert_match(admin_projects_details_dtos,
+                              'user_projects_details')
 
-        assert user_projects_details_dtos == expected_user_projects_details
-
+    @patch.object(UserService, 'interface')
     def test_get_projects_for_admin_with_offset_gt_total_projects(
-        self, projects):
+        self, interface_mock, projects, user_admin_dto, snapshot):
 
         #arrange
         user_id = 1
         storage = ProjectStorageImplementation()
-        expected_user_projects_details = []
+        interface_mock.get_user_dto.return_value=user_admin_dto
 
         #act
-        user_projects_details_dtos = storage.get_projects_for_admin(
+        admin_projects_details_dtos = storage.get_projects_for_admin(
             user_id=user_id,
             limit=2,
             offset=3)
 
         #assert
 
-        print(user_projects_details_dtos)
-        print("\n", expected_user_projects_details)
+        snapshot.assert_match(admin_projects_details_dtos,
+                              'user_projects_details')
 
-        assert user_projects_details_dtos == expected_user_projects_details
-
-    def test_get_workflow_id_of_project(self, projects):
+    def test_get_workflow_id_of_project(self, projects, snapshot):
 
         #arrange
         storage = ProjectStorageImplementation()
         project_id = 1
-        project = projects[0]
-        expected_workflow_id = project.workflow_id
 
         #act
         workflow_id = storage.get_workflow_id_of_project(
             project_id=project_id)
 
         #assert
-        assert workflow_id == expected_workflow_id
+        snapshot.assert_match(workflow_id, 'workflow_id')
 
-    def test_get_states_transition_details(self, projects):
+    def test_get_states_transition_details(self, projects, snapshot):
 
         #arrange
         from .raw_inputs import get_transition_details_query_dto
-        from .expected_responses import transition_details_dto
         storage = ProjectStorageImplementation()
 
         #act
@@ -465,16 +439,14 @@ class TestProjectStorage:
             get_transition_details_query_dto)
 
         #assert
-        assert response == transition_details_dto
+        snapshot.assert_match(response, 'transition_details_dto')
 
     def test_get_states_transition_details_with_zero_checklist(
-            self, projects):
+            self, projects, snapshot):
 
         #arrange
         from .raw_inputs\
             import query_dto_with_no_checklist_for_transition
-        from .expected_responses\
-            import transition_details_with_no_checklist_dto
         storage = ProjectStorageImplementation()
 
         #act
@@ -482,13 +454,12 @@ class TestProjectStorage:
             query_dto_with_no_checklist_for_transition)
 
         #assert
-        assert response == transition_details_with_no_checklist_dto
+        snapshot.assert_match(response, 'transition_details')
 
-    def test_get_transition_mandatory_checklist(self, projects):
+    def test_get_transition_mandatory_checklist(self, projects, snapshot):
 
         #arrange
         from .raw_inputs import update_task_state_query_dto
-        from .expected_responses import transition_checklist_dtos
         storage = ProjectStorageImplementation()
 
         #act
@@ -496,16 +467,14 @@ class TestProjectStorage:
             update_task_state_query_dto)
 
         #assert
-        print(response)
-        print(transition_checklist_dtos)
-        assert response == transition_checklist_dtos
+        snapshot.assert_match(response, 'transition_checklist_dtos')
 
-    def test_get_transition_mandatory_checklist_with_empty(self, projects):
+    def test_get_transition_mandatory_checklist_with_empty(self, projects,
+                                                           snapshot):
 
         #arrange
         from .raw_inputs\
             import update_task_state_query_expected_empty_checklist_dto
-        from .expected_responses import transition_checklist_empty_dtos
         storage = ProjectStorageImplementation()
 
         #act
@@ -513,4 +482,4 @@ class TestProjectStorage:
             update_task_state_query_expected_empty_checklist_dto)
 
         #assert
-        assert response == transition_checklist_empty_dtos
+        snapshot.assert_match(response, 'transition_checklist')

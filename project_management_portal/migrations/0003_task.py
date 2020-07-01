@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('issue_type', models.CharField(max_length=100)),
                 ('title', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=100)),
-                ('assignee', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('assignee_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='project_management_portal.Project')),
                 ('state', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='project_management_portal.State')),
             ],

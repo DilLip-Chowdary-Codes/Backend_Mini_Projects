@@ -49,6 +49,6 @@ def api_wrapper(*args, **kwargs):
         project_presenter=project_presenter,
         task_presenter=task_presenter
         )
-
+    print("\n"*5,task_details,"\n"*5)
     response_data = json.dumps(task_details)
     return HttpResponse(response_data, status=201)

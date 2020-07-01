@@ -38,7 +38,7 @@ class TestCase02GetProjectsAPIForAdminTestCase(CustomTestUtils):
         super(TestCase02GetProjectsAPIForAdminTestCase, self).setupUser(
             username, password)
         self.make_user_admin()
-        self.create_projects_for_admin()
+        self.create_projects()
 
     def test_case(self):
         self.default_test_case()

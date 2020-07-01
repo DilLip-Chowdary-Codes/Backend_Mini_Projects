@@ -10,10 +10,6 @@ class ProjectStorageInterface(ABC):
         pass
 
     @abstractmethod
-    def validate_admin_scope(self, user_id: int):
-        pass
-
-    @abstractmethod
     def validate_project_id(self, project_id: int):
         pass
 

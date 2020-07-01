@@ -15,7 +15,7 @@ class ProjectDto:
     description: str
     workflow_id: int
     project_type: str
-    developers: Optional[List[int]] = None
+    developer_ids: Optional[List[int]] = None
 
 @dataclass
 class ProjectDetailsDto:
@@ -26,7 +26,7 @@ class ProjectDetailsDto:
     project_type: str
     created_by: UserDto
     created_at: str
-    developers: List[UserDto]
+    developer_ids: List[UserDto]
 
 @dataclass
 class StateDto:
@@ -51,7 +51,7 @@ class TaskDetailsDto:
     project: ProjectDetailsDto
     issue_type: str
     title: str
-    assignee: UserDto
+    assignee_id: UserDto
     description: str
     state: str
 

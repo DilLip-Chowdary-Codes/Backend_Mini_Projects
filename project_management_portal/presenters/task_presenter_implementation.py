@@ -25,7 +25,7 @@ class TaskPresenterImplementation(TaskPresenterInterface):
         project_dto = task_details_dto.project
         project_details = project_utils.get_project_details_response(
             project_dto)
-        user_dto = task_details_dto.assignee
+        user_dto = task_details_dto.assignee_id
         user_details = self._convert_user_dto_to_dict(user_dto)
 
         task_details_response = {
@@ -33,7 +33,7 @@ class TaskPresenterImplementation(TaskPresenterInterface):
             "task_id": task_details_dto.task_id,
             "issue_type": task_details_dto.issue_type,
             "title": task_details_dto.title,
-            "assignee": user_details,
+            "assignee_id": user_details,
             "description": task_details_dto.description,
             "state": task_details_dto.state
         }

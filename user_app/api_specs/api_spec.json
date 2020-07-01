@@ -1,0 +1,162 @@
+{
+	"swagger": "2.0",
+	"host": "localhost",
+	"basePath": "/api/project_management_portal/",
+	"info": {
+		"version": "1.0",
+		"title": "Simple Project Management API",
+		"description": ""
+	},
+	"schemes": [
+		"https",
+		"http"
+	],
+	"consumes": [
+		"application/json"
+	],
+	"produces": [
+		"application/json"
+	],
+	"securityDefinitions": {
+		"oauth": {
+			"tokenUrl": "http://auth.ibtspl.com/oauth2/v1/",
+			"flow": "password",
+			"scopes": {
+				"read": "read users",
+				"write": "create users",
+				"update": "update users",
+				"delete": "delete users",
+				"superuser": "super user permission"
+			},
+			"type": "oauth2"
+		}
+	},
+	"definitions": {},
+	"parameters": {
+		"LoginParameters": {
+			"name": "Login",
+			"description": "Data requested to login",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				]
+			}
+		}
+	},
+	"responses": {
+		"UnauthorizedResponse": {
+
+			"description": "Unauthorized Access"
+		},
+		"LoginResponse": {
+			"description": "User Login Succesful",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"user_id": {
+						"type": "integer"
+					},
+					"username": {
+						"type": "string"
+					},
+					"profile_pic": {
+						"type": "string"
+					},
+					"is_admin": {
+						"type": "boolean"
+					},
+					"access_token": {
+						"type": "string"
+					},
+					"refresh_token": {
+						"type": "string"
+					},
+					"expires_in": {
+						"type": "integer",
+						"format": "int64"
+					}
+				},
+				"required": [
+					"user_id",
+					"username",
+					"profile_pic",
+					"access_token",
+					"refresh_token",
+					"expires_in",
+					"is_admin"
+				]
+			}
+		},
+		"UserNotFoundResponse": {
+			"description": "User not registered"
+		},
+		"LogoutResponse": {
+			"description": "Logout Succesful"
+		}
+	},
+	"paths": {
+		"/user/login/v1/": {
+			"post": {
+				"operationId": "user_login",
+				"summary": "Login API",
+				"parameters": [{
+					"$ref": "#/parameters/LoginParameters"
+				}],
+				"responses": {
+					"404": {
+						"$ref": "#/responses/UserNotFoundResponse"
+					},
+					"401": {
+						"description": "Invalid Password Entered"
+					},
+					"200": {
+						"$ref": "#/responses/LoginResponse"
+					}
+				}
+			}
+		},
+		"/user/logout/v1/": {
+			"delete": {
+				"operationId": "logout",
+				"summary": "Logout API",
+				"security": [{
+					"oauth": [
+						"read",
+						"write"
+					]
+				}],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/LogoutResponse"
+					},
+					"401": {
+						"$ref": "#/responses/UnauthorizedResponse"
+					}
+				}
+			}
+		},
+		"/check/v1": {
+			"get": {
+				"operationId": "check_connect",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		}
+	}
+}

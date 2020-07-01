@@ -18,7 +18,8 @@ from django_swagger_utils.drf_server.utils.general.import_app_settings import \
 
 THIRD_PARTY_APPS = []
 APPS = [
-    "project_management_portal"
+    "project_management_portal",
+    "user_app"
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
@@ -61,7 +62,8 @@ SWAGGER_UTILS = {
         }
     },
     "APPS": {
-        "project_management_portal":{}
+        "project_management_portal":{},
+        "user_app":{}
     },
     "HOST": os.environ.get('APIGATEWAY_ENDPOINT', '127.0.0.1:8000'),
 }
@@ -70,4 +72,4 @@ API_KEY_AUTHENTICATION_CLASS = \
     "ib_miniprojects_backend.common.authentication.APIKeyAuthentication"
 
 CUSTOM_EXCEPTIONS_TO_LOG_IN_SENTRY = []
-AUTH_USER_MODEL = 'project_management_portal.User'
+AUTH_USER_MODEL = 'user_app.User'

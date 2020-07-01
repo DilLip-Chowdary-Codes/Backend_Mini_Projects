@@ -7,6 +7,8 @@ from project_management_portal.exceptions\
 from project_management_portal.interactors.mixins.validations\
     import ValidationsMixin
 from project_management_portal.constants import DEFAULT_LIMIT, DEFAULT_OFFSET
+from project_management_portal.adapters.service_adapter\
+    import get_service_adapter
 
 class GetProjectsInteractor(ValidationsMixin):
     def __init__(self,
@@ -42,10 +44,11 @@ class GetProjectsInteractor(ValidationsMixin):
             limit = DEFAULT_LIMIT
         if offset is None:
             offset = DEFAULT_OFFSET
+        
+        adapter_service = get_service_adapter()
+        user_service = adapter_service.user_service
 
-        is_admin = self.project_storage.validate_admin_scope(
-            user_id=user_id)
-
+        is_admin = user_service.is_admin(user_id=user_id)
 
         if is_admin:
             total_projects_count = self.project_storage\
