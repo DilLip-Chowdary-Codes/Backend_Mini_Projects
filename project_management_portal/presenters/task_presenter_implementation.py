@@ -8,9 +8,6 @@ from project_management_portal.constants.exception_messages\
     import INVALID_STATE,\
         INVALID_WORKFLOW, INVALID_TASK, INVALID_TRANSITION
 
-from project_management_portal.presenters.project_presenter_implementation\
-        import ProjectPresenterImplementation
-
 class TaskPresenterImplementation(TaskPresenterInterface):
 
     def raise_invalid_state_id_exception(self):
@@ -21,14 +18,11 @@ class TaskPresenterImplementation(TaskPresenterInterface):
 
     def get_create_task_response(self, task_details_dto):
 
-        project_utils = ProjectPresenterImplementation()
         project_dto = task_details_dto.project
-        project_details = project_utils.get_project_details_response(
-            project_dto)
         assignee_id = task_details_dto.assignee_id
 
         task_details_response = {
-            "project": project_details,
+            "project": project_dto.name,
             "task_id": task_details_dto.task_id,
             "issue_type": task_details_dto.issue_type,
             "title": task_details_dto.title,
@@ -41,16 +35,10 @@ class TaskPresenterImplementation(TaskPresenterInterface):
 
     def get_tasks_response(self, tasks_details_dtos):
 
-        project_utils = ProjectPresenterImplementation()
         is_tasks_not_empty = tasks_details_dtos
         if is_tasks_not_empty:
 
             project_dto = tasks_details_dtos[0].project
-
-            project_details = project_utils.get_project_details_response(
-                project_dto)
-        else:
-            project_details = {}
 
         tasks_details_responses = [
             self.get_create_task_response(task_details_dto)
@@ -65,7 +53,7 @@ class TaskPresenterImplementation(TaskPresenterInterface):
 
         response = {
             "total_tasks": len(tasks_details_dtos),
-            "project" : project_details,
+            "project" : project_dto.name,
             "tasks": tasks_details_response
         }
         return response

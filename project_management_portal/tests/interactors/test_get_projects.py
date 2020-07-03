@@ -7,11 +7,9 @@ from project_management_portal.interactors.presenters\
     .project_presenter_interface import ProjectPresenterInterface
 from project_management_portal.interactors.get_projects_interactor\
     import GetProjectsInteractor
-from .raw_inputs import project_data
-from .expected_responses\
-    import \
-        get_projects_response,\
-        projects_dtos
+from .raw_inputs import project_data, project_dtos,\
+                        projects_details_dto, user_dtos
+from .expected_responses import get_projects_response
 
 from project_management_portal.exceptions import InvalidWorkFlow
 from project_management_portal.adapters.user_service import UserService
@@ -29,12 +27,13 @@ class TestGetProjects:
         project_presenter = create_autospec(ProjectPresenterInterface)
         interactor = GetProjectsInteractor(project_storage=project_storage)
         project_storage.get_projects_for_admin.return_value\
-            = projects_dtos
+            = project_dtos
         project_storage.get_admin_projects_count.return_value\
             = total_projects_count
         project_presenter.get_projects_response\
             .return_value = get_projects_response
-        interface_mock.is_user_admin.return_value=True
+        interface_mock.is_user_admin.return_value = True
+        interface_mock.get_user_dtos.return_value = user_dtos
 
         #act
         project_details = interactor.get_projects_wrapper(
@@ -51,7 +50,7 @@ class TestGetProjects:
                 limit=1)
         project_presenter.get_projects_response.assert_called_once_with(
             total_projects_count=total_projects_count,
-            all_projects_details_dtos=projects_dtos)
+            projects_details_dto=projects_details_dto)
         snapshot.assert_match(project_details, 'project_details')
 
     @patch.object(UserService, 'interface')
@@ -64,20 +63,23 @@ class TestGetProjects:
         interactor = GetProjectsInteractor(project_storage=project_storage)
 
         project_storage.get_projects_for_user.return_value\
-            = projects_dtos
+            = project_dtos
         project_storage.get_user_projects_count.return_value\
             = total_projects_count
         project_presenter.get_projects_response\
             .return_value = get_projects_response
 
         interface_mock.is_user_admin.return_value = False
+        interface_mock.get_user_dtos.return_value = user_dtos
+
         #act
 
         project_details = interactor.get_projects_wrapper(
             user_id=user_id,
-                offset=0,
-                limit=1,
-                project_presenter=project_presenter)
+            offset=0,
+            limit=1,
+            project_presenter=project_presenter
+            )
 
         #assert
         project_storage.get_projects_for_user.assert_called_once_with(
@@ -87,5 +89,5 @@ class TestGetProjects:
 
         project_presenter.get_projects_response.assert_called_once_with(
             total_projects_count=total_projects_count,
-            all_projects_details_dtos=projects_dtos)
+            projects_details_dto=projects_details_dto)
         snapshot.assert_match(project_details, 'project_details')

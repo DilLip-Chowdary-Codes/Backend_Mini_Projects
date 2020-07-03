@@ -6,7 +6,7 @@ from project_management_portal.exceptions\
 from django_swagger_utils.drf_server.exceptions\
     import NotFound, Unauthorized, BadRequest
 
-from .raw_inputs import project_details_dto, projects_details_dtos
+from .raw_inputs import projects_details_dto
 
 class TestProjectPresenter:
 
@@ -95,9 +95,10 @@ class TestProjectPresenter:
 
         #act
         project_details = presenter.get_project_details_response(
-            project_details_dto=project_details_dto)
+            projects_details_dto=projects_details_dto)
 
         #assert
+        print(project_details)
         snapshot.assert_match(project_details, 'project_details')
 
     def test_get_projects_response(self, snapshot):
@@ -108,7 +109,7 @@ class TestProjectPresenter:
         #act
         projects_details = presenter.get_projects_response(
                 total_projects_count=1,
-                all_projects_details_dtos=projects_details_dtos)
+                projects_details_dto=projects_details_dto)
 
         #assert
         snapshot.assert_match(projects_details, 'projects_details')

@@ -1,13 +1,13 @@
 from datetime import datetime
 from common.dtos import UserAuthTokensDTO
 from project_management_portal.dtos\
-  import UserDto, ProjectDto,\
-         ProjectDetailsDto, TransitionDto,\
+  import UserDto, CreateProjectRequestDto,\
+         ProjectDto, TransitionDto,\
          StateDto, TaskDetailsDto, WorkflowDetailsDto,\
          TransitionDetailsDto, ChecklistDetailsDto,\
          GetTransitionDetailsDto, StateDetailsDto
 
-from .raw_inputs import project_data, project_details_dto,user_dto
+from .raw_inputs import project_data, projects_details_dto,user_dto
 
 
 access_token_dto = UserAuthTokensDTO(
@@ -63,21 +63,21 @@ get_projects_response = [
   }
   ]
 
-project_dto = ProjectDto(
+project_dto = CreateProjectRequestDto(
             name=project_data.get('name'),
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developer_ids=project_data.get('developers')
+            developers_ids=project_data.get('developers')
             )
-            
+
 projects_dtos =[
-  ProjectDto(
+  CreateProjectRequestDto(
     name=project_data.get('name'),
     description=project_data.get('description'),
     workflow_id=project_data.get('workflow_id'),
     project_type=project_data.get('project_type'),
-    developer_ids=project_data.get('developers')
+    developers_ids=project_data.get('developers')
     )
     ]
 
@@ -127,7 +127,7 @@ state_2_dto = StateDto(
 
 updated_task_details_dto = TaskDetailsDto(
   task_id=1,
-  project=project_details_dto,
+  project=projects_details_dto,
   issue_type="Enhancement",
   title="Optimizing DB",
   assignee_id=user_dto.user_id,
@@ -150,17 +150,6 @@ developer_dto = UserDto(
   profile_pic="http://www.google.com",
   phone_no="8739835635",
   is_admin=False
-  )
-
-project_details_dto = ProjectDetailsDto(
-  project_id=1,
-  name="projectManagement",
-  description="it's a blaw blaw blaw blaw  blaw blaw ",
-  workflow="",
-  project_type="Classic Software",
-  created_by_id=user_dto.user_id,
-  created_at="2020-05-28 10:06:23",
-  developer_ids=[developer_dto]
   )
 
 transitions_dtos = [

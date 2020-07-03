@@ -3,7 +3,8 @@ from project_management_portal.interactors.storages.project_storage_interface\
     import ProjectStorageInterface
 from project_management_portal.interactors.presenters\
     .project_presenter_interface import ProjectPresenterInterface
-from project_management_portal.dtos import ProjectDto
+from project_management_portal.dtos\
+    import CreateProjectRequestDto, ProjectDto, ProjectsDetailsDto
 from project_management_portal.exceptions import InvalidWorkFlow
 from project_management_portal.adapters.service_adapter\
     import get_service_adapter
@@ -18,13 +19,13 @@ class CreateProjectInteractor:
                                presenter: ProjectPresenterInterface):
 
         try:
-            project_details_dto = self.create_project(user_id, project_data)
+            projects_details_dto = self.create_project(user_id, project_data)
 
         except InvalidWorkFlow:
             presenter.raise_invalid_workflow_id_exception()
 
         response = presenter.get_project_details_response(
-            project_details_dto)
+            projects_details_dto=projects_details_dto)
 
         return response
 
@@ -37,27 +38,41 @@ class CreateProjectInteractor:
         if is_workflow_invalid:
             raise InvalidWorkFlow()
 
-        project_dto = self._convert_project_data_to_dto(project_data)
-        # adapter = get_service_adapter()
-        # user_service = adapter.user_service
-        # developer_ids = project_dto.developer_ids
-        # developers_dtos = user_service.get_user_dtos(
-        #     user_ids=developer_ids)
+        create_project_request_dto = self\
+            ._convert_create_project_request_data_to_dto(project_data)
 
-        project_details_dto = self.storage.create_project(
+        project_dto = self.storage.create_project(
             user_id=user_id,
-            project_dto=project_dto
+            project_dto=create_project_request_dto
             )
-        return project_details_dto
+
+        projects_details_dto = self._prepare_projects_details_dto(project_dto)
+
+        return projects_details_dto
 
     @staticmethod
-    def _convert_project_data_to_dto(project_data):
+    def _convert_create_project_request_data_to_dto(project_data):
 
-        project_dto = ProjectDto(
+        project_dto = CreateProjectRequestDto(
             name=project_data.get('name'),
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developer_ids=project_data.get('developers')
+            developers_ids=project_data.get('developers')
             )
         return project_dto
+
+    @staticmethod
+    def _prepare_projects_details_dto(project_dto):
+
+        adapter = get_service_adapter()
+        user_service = adapter.user_service
+
+        user_ids = project_dto.developers_ids
+        user_ids.append(project_dto.created_by_id)
+        user_ids = list(set(user_ids))
+        project_dtos = [project_dto]
+        user_dtos = user_service.get_user_dtos(user_ids=user_ids)
+        projects_details_dto = ProjectsDetailsDto(project_dtos, user_dtos)
+
+        return projects_details_dto

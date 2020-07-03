@@ -8,7 +8,7 @@ from project_management_portal.storages.project_storage_implementation\
 from project_management_portal.tests.storages.raw_inputs\
     import project_dto, projects_dtos,\
             projects_details_dtos,\
-            project_details_dto
+            projects_details_dto
 from project_management_portal.adapters.user_service\
             import UserService
 
@@ -124,20 +124,20 @@ class TestProjectStorage:
 
         #arrange
         from project_management_portal.tests.storages.raw_inputs\
-            import  project_details_dto
+            import  projects_details_dto
         user_id = 1
         storage = ProjectStorageImplementation()
 
         interface_mock.get_user_dto.return_value = user_admin_dto
 
         #act
-        project_details_dto = storage.create_project(
+        projects_details_dto = storage.create_project(
             user_id=user_id,
             project_dto=project_dto
             )
 
         #assert
-        snapshot.assert_match(project_details_dto, 'project_details_dto')
+        snapshot.assert_match(projects_details_dto, 'projects_details_dto')
 
     def test_create_project_with_no_developers(self, workflows,
                                                user_admin_dto,
@@ -155,13 +155,13 @@ class TestProjectStorage:
         with patch.object(UserService, 'get_user_dto',
                           return_value=user_admin_dto):
 
-            project_details_dto = storage.create_project(
+            projects_details_dto = storage.create_project(
                 user_id=user_id,
                 project_dto=project_dto
                 )
 
         #assert
-        snapshot.assert_match(project_details_dto, 'project_details_dto')
+        snapshot.assert_match(projects_details_dto, 'projects_details_dto')
 
     def test_get_user_projects_count(self, projects, snapshot):
 

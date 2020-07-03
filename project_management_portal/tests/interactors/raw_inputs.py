@@ -1,6 +1,6 @@
 from project_management_portal.dtos\
-  import TaskDetailsDto, ProjectDto,\
-        StateDto, UserDto, ProjectDetailsDto,\
+  import TaskDetailsDto, CreateProjectRequestDto,\
+        StateDto, UserDto, ProjectDto, ProjectsDetailsDto,\
         TaskDto, TransitionDetailsDto, ChecklistDetailsDto,\
         UpdateTransitionInputDto, ChecklistStatusDto
 
@@ -9,7 +9,7 @@ project_data = {
   "description": "it's a blaw blaw blaw blaw  blaw blaw ",
   "workflow_id": 1,
   "project_type": "Classic Software",
-  "developers": [1]
+  "developers": [1, 2]
 }
 
 task_data = {
@@ -36,30 +36,62 @@ developer_dto = UserDto(
   is_admin=False
   )
 
+user_dtos = [user_dto, developer_dto]
+
 state_dto = StateDto(
   name="In Progress")
 
 state_2_dto = StateDto(
   name="New State")
 
-
-project_dto = ProjectDto(
+create_project_request_dto = CreateProjectRequestDto(
   name="projectManagement",
   description="it's a blaw blaw blaw blaw  blaw blaw ",
   workflow_id=1,
   project_type="Classic Software",
-  developer_ids=[1]
+  developers_ids=[1]
   )
 
-project_details_dto = ProjectDetailsDto(
+create_project_request_dto = CreateProjectRequestDto(
+  name="projectManagement",
+  description="it's a blaw blaw blaw blaw  blaw blaw ",
+  workflow_id=1,
+  project_type="Classic Software",
+  developers_ids=[user_dto.user_id, developer_dto.user_id]
+  )
+
+project_dto = ProjectDto(
   project_id=1,
   name="projectManagement",
   description="it's a blaw blaw blaw blaw  blaw blaw ",
-  workflow="",
+  workflow="Workflow_1",
   project_type="Classic Software",
   created_by_id=user_dto.user_id,
   created_at="2020-05-28 10:06:23",
-  developer_ids=[developer_dto]
+  developers_ids=[user_dto.user_id, developer_dto.user_id]
+  )
+
+project_dto_2 = ProjectDto(
+  project_id=2,
+  name="projectManagement",
+  description="it's a blaw blaw blaw blaw  blaw blaw ",
+  workflow="Workflow_1",
+  project_type="Classic Software",
+  created_by_id=user_dto.user_id,
+  created_at="2020-05-28 10:06:23",
+  developers_ids=[user_dto.user_id, developer_dto.user_id]
+  )
+
+project_dtos = [project_dto, project_dto_2]
+
+projects_details_dto_for_create_project = ProjectsDetailsDto(
+  project_dtos=[project_dto],
+  user_dtos=[user_dto, developer_dto]
+  )
+
+projects_details_dto = ProjectsDetailsDto(
+  project_dtos=[project_dto, project_dto_2],
+  user_dtos=[user_dto, developer_dto]
   )
 
 task_dto = TaskDto(
@@ -71,7 +103,7 @@ task_dto = TaskDto(
 
 task_details_dto = TaskDetailsDto(
   task_id=1,
-  project=project_details_dto,
+  project=projects_details_dto,
   issue_type="Enhancement",
   title="Optimizing DB",
   assignee_id=user_dto.user_id,

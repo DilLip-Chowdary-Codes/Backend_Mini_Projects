@@ -12,7 +12,7 @@ REQUEST_BODY = """
 TEST_CASE = {
     "request": {
         "path_params": {},
-        "query_params": {"limit": 3, "offset": 0, "sort_by": True},
+        "query_params": {"limit": 4, "offset": 0, "sort_by": True},
         "header_params": {"HTTP_OAUTHTOKEN": "string"},
         "securities": {"oauth": {
             "tokenUrl": "http://auth.ibtspl.com/oauth2/v1/",

@@ -10,15 +10,16 @@ class UserDto:
     is_admin: bool
 
 @dataclass
-class ProjectDto:
+class CreateProjectRequestDto:
+
     name: str
     description: str
     workflow_id: int
     project_type: str
-    developer_ids: Optional[List[int]] = None
+    developers_ids: Optional[List[int]] = None
 
 @dataclass
-class ProjectDetailsDto:
+class ProjectDto:
     project_id: int
     name: str
     description: str
@@ -26,7 +27,17 @@ class ProjectDetailsDto:
     project_type: str
     created_by_id: int
     created_at: str
-    developer_ids: List[int]
+    developers_ids: List[int]
+
+# @dataclass
+# class ProjectDetailsDto:
+#     project_dto: ProjectDto
+#     user_dtos: List[UserDto]
+
+@dataclass
+class ProjectsDetailsDto:
+    project_dtos: List[ProjectDto]
+    user_dtos: List[UserDto]
 
 @dataclass
 class StateDto:
@@ -48,7 +59,7 @@ class TaskDto:
 @dataclass
 class TaskDetailsDto:
     task_id: int
-    project: ProjectDetailsDto
+    project: ProjectDto
     issue_type: str
     title: str
     assignee_id: int

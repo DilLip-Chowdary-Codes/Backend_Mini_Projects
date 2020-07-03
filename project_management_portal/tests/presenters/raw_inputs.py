@@ -1,7 +1,8 @@
 from project_management_portal.dtos\
   import \
-    ProjectDto, UserDto,\
-    ProjectDetailsDto, TaskDetailsDto,\
+    CreateProjectRequestDto, UserDto,\
+    ProjectsDetailsDto,\
+    ProjectDto, TaskDetailsDto,\
     StateDto, StateDetailsDto, WorkflowDetailsDto,\
     TransitionDetailsDto
 
@@ -10,7 +11,7 @@ project_data = {
   "description": "it's a blaw blaw blaw blaw  blaw blaw ",
   "workflow_id": 1,
   "project_type": "Classic Software",
-  "developers": [1]
+  "developers": [1, 2]
 }
 
 user_dto = UserDto(
@@ -21,35 +22,59 @@ user_dto = UserDto(
   is_admin=True
   )
 
-project_dto = ProjectDto(
+developer_dto = UserDto(
+  user_id=2,
+  username="username_2",
+  profile_pic="http://www.google.com",
+  phone_no="8739835635",
+  is_admin=False
+  )
+
+project_dto = CreateProjectRequestDto(
             name=project_data.get('name'),
             description=project_data.get('description'),
             workflow_id=project_data.get('workflow_id'),
             project_type=project_data.get('project_type'),
-            developer_ids=project_data.get('developers')
+            developers_ids=project_data.get('developers')
             )
 
 projects_dtos =[
-  ProjectDto(
+  CreateProjectRequestDto(
     name=project_data.get('name'),
     description=project_data.get('description'),
     workflow_id=project_data.get('workflow_id'),
     project_type=project_data.get('project_type'),
-    developer_ids=project_data.get('developers')
+    developers_ids=project_data.get('developers')
     )
     ]
 
-project_details_dto = ProjectDetailsDto(
+project_dto = ProjectDto(
     project_id=1,
     name="projectManagement",
     description="it's a blaw blaw blaw blaw  blaw blaw ",
-    workflow="type",
+    workflow="Workflow_1",
     project_type="Classic Software",
     created_by_id=user_dto.user_id,
     created_at="2020-05-28 10:06:23 AM",
-    developer_ids=[user_dto.user_id])
+    developers_ids=[user_dto.user_id, developer_dto.user_id])
 
-projects_details_dtos = [project_details_dto]
+project_dto_2 = ProjectDto(
+    project_id=2,
+    name="projectManagement_2",
+    description="it's a blaw blaw blaw blaw  blaw blaw ",
+    workflow="Workflow_2",
+    project_type="Classic Software",
+    created_by_id=user_dto.user_id,
+    created_at="2020-05-28 10:06:23 AM",
+    developers_ids=[developer_dto.user_id])
+
+project_dtos = [project_dto, project_dto_2]
+
+user_dtos = [user_dto, developer_dto]
+
+projects_details_dto = ProjectsDetailsDto(
+  project_dtos=project_dtos,
+  user_dtos=user_dtos)
 
 state_dto = StateDto(
   name="In Progress")
@@ -85,7 +110,7 @@ developer_dto = UserDto(
   is_admin=False
   )
 
-task_project_dto = ProjectDetailsDto(
+task_project_dto = ProjectDto(
   project_id=1,
   name="projectManagement",
   description="it's a blaw blaw blaw blaw  blaw blaw ",
@@ -93,7 +118,7 @@ task_project_dto = ProjectDetailsDto(
   project_type="Classic Software",
   created_by_id=task_user_dto.user_id,
   created_at="2020-05-28 10:06:23",
-  developer_ids=[developer_dto.user_id]
+  developers_ids=[developer_dto.user_id]
   )
 
 task_details_dto = TaskDetailsDto(

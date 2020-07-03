@@ -80,11 +80,11 @@ class CustomTestUtils(CustomAPITestCase):
             user_id = 1
 
         workflow = self.create_workflow()
-        ProjectFactory.create_batch(size=6,
+        ProjectFactory.create_batch(size=4,
                                     workflow=workflow,
                                     created_by_id=user_id)
         DeveloperFactory.create_batch(size=4, user_id=user_id)
-    
+
     def make_user_admin(self):
         from user_app.models import User
         User.objects.filter(user_id=1).update(is_admin=True)

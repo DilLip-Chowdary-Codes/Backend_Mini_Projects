@@ -24,8 +24,8 @@ class GetUserDtosInteractor:
         valid_user_ids = self.storage.get_valid_user_ids(user_ids)
         invalid_user_ids = list( set(user_ids) - set(valid_user_ids) )
 
-        is_invalid_user_ids_exists = not invalid_user_ids
-
+        is_invalid_user_ids_exists = invalid_user_ids
+        # print("\n"*5, invalid_user_ids, "\n"*5)
         if is_invalid_user_ids_exists:
             raise InvalidUserIds(invalid_user_ids)
 

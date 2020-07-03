@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import  Optional, List
 from common.dtos import UserAuthTokensDTO
-from project_management_portal.dtos import ProjectDto
+from project_management_portal.dtos import CreateProjectRequestDto
 
 class ProjectStorageInterface(ABC):
 
@@ -30,21 +30,21 @@ class ProjectStorageInterface(ABC):
         pass
 
     @abstractmethod
-    def create_project(self, user_id: int, project_dto: ProjectDto) -> int:
+    def create_project(self, user_id: int, project_dto: CreateProjectRequestDto) -> int:
         pass
 
     @abstractmethod
     def get_projects_for_user(self,
                                       user_id: int,
                                       offset: int,
-                                      limit: int) -> List[ProjectDto]:
+                                      limit: int) -> List[CreateProjectRequestDto]:
         pass
 
     @abstractmethod
     def get_projects_for_admin(self,
                                      user_id: int,
                                      offset: int,
-                                     limit: int) -> List[ProjectDto]:
+                                     limit: int) -> List[CreateProjectRequestDto]:
         pass
 
     @abstractmethod

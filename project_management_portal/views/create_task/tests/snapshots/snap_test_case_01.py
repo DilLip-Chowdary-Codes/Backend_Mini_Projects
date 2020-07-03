@@ -13,19 +13,7 @@ snapshots['TestCase01CreateTaskAPITestCase::test_case body'] = {
     'assignee_id': 1,
     'description': 'string',
     'issue_type': 'BUG',
-    'project': {
-        'created_at': '2020-06-26 00:00:00',
-        'created_by': 1,
-        'description': 'project_1_description',
-        'developers': [
-            1,
-            2
-        ],
-        'name': 'project_1',
-        'project_id': 1,
-        'project_type': 'Classic Software',
-        'workflow': 'workflow_1'
-    },
+    'project': 'project_1',
     'state': 'state_1',
     'task_id': 6,
     'title': 'string'
@@ -37,7 +25,7 @@ snapshots['TestCase01CreateTaskAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '346',
+        '141',
         'Content-Length'
     ],
     'content-type': [

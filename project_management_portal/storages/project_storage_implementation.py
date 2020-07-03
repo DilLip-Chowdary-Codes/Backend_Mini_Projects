@@ -6,7 +6,7 @@ from common.dtos import UserAuthTokensDTO
 from project_management_portal.models\
     import Project, Developer, Workflow, Transition
 from project_management_portal.dtos\
-    import ProjectDto, UserDto, ProjectDetailsDto, TransitionDto,\
+    import CreateProjectRequestDto, UserDto, ProjectDto, TransitionDto,\
            TransitionDetailsDto, StateDetailsDto, ChecklistDetailsDto
 
 from project_management_portal.interactors.storages.project_storage_interface\
@@ -52,8 +52,8 @@ class ProjectStorageImplementation(ProjectStorageInterface):
 
     def create_project(self,
                        user_id: int,
-                       project_dto: ProjectDto
-                      ) -> ProjectDetailsDto:
+                       project_dto: CreateProjectRequestDto
+                      ) -> ProjectDto:
 
         project_obj = Project.objects.create(
             name=project_dto.name,
@@ -63,23 +63,23 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             created_by_id=user_id
             )
 
-        developer_ids = project_dto.developer_ids
+        developers_ids = project_dto.developers_ids
         developers_list = [
             Developer(user_id=developer_id, project_id=project_obj.id)
-            for developer_id in developer_ids
+            for developer_id in developers_ids
             ]
 
         Developer.objects.bulk_create(developers_list)
 
-        project_details_dto = self\
-            ._convert_project_object_to_project_details_dto(project_obj)
+        projects_details_dto = self\
+            ._convert_project_object_to_projects_details_dto(project_obj)
 
-        return project_details_dto
+        return projects_details_dto
 
     def get_projects_for_user(self,
                                       user_id: int,
                                       offset: int,
-                                      limit: int) -> List[ProjectDto]:
+                                      limit: int) -> List[CreateProjectRequestDto]:
 
         transition_set = Transition.objects\
             .select_related('from_state', 'to_state')
@@ -99,7 +99,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             .order_by('-created_at')[offset: offset + limit]
 
         project_dtos = [
-            self._convert_project_object_to_project_details_dto(project)
+            self._convert_project_object_to_projects_details_dto(project)
             for project in user_projects
             ]
 
@@ -108,7 +108,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
     def get_projects_for_admin(self,
                                      user_id: int,
                                      offset: int,
-                                     limit: int) -> List[ProjectDto]:
+                                     limit: int) -> List[CreateProjectRequestDto]:
 
         transition_set = Transition.objects\
             .select_related('from_state', 'to_state')
@@ -124,7 +124,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             .order_by('-created_at')[offset: offset + limit]
 
         project_dtos = [
-            self._convert_project_object_to_project_details_dto(project)
+            self._convert_project_object_to_projects_details_dto(project)
             for project in admin_projects
             ]
 
@@ -196,9 +196,9 @@ class ProjectStorageImplementation(ProjectStorageInterface):
 
         return transition_checklist_dtos
 
-    def _convert_project_object_to_project_details_dto(self,
+    def _convert_project_object_to_projects_details_dto(self,
                                        project: object
-                                      ) -> ProjectDetailsDto:
+                                      ) -> ProjectDto:
 
         project_developers_ids = Developer.objects\
                 .filter(project_id=project.id)\
@@ -206,7 +206,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
 
         project_developers_ids = list(set(project_developers_ids))
 
-        project_details_dto = ProjectDetailsDto(
+        projects_details_dto = ProjectDto(
             project_id=project.id,
             name=project.name,
             description=project.description,
@@ -214,10 +214,10 @@ class ProjectStorageImplementation(ProjectStorageInterface):
             project_type=project.project_type,
             created_by_id=project.created_by_id,
             created_at=str(project.created_at),
-            developer_ids=project_developers_ids
+            developers_ids=project_developers_ids
             )
 
-        return project_details_dto
+        return projects_details_dto
 
     @staticmethod
     def _convert_transition_object_to_dto(transition):
@@ -232,7 +232,7 @@ class ProjectStorageImplementation(ProjectStorageInterface):
 
     @staticmethod
     def _convert_project_object_to_dto(project):
-        project_dto = ProjectDto(
+        project_dto = CreateProjectRequestDto(
             name=project.name,
             description=project.description,
             workflow_id=project.workflow_id,

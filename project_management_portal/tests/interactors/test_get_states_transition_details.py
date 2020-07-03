@@ -48,7 +48,7 @@ class TestGetStatesTransitionDetails:
 
         project_id = transition_details_query_dict['project_id']
         task_id = transition_details_query_dict['task_id']
-        workflow_id = project_dto.workflow_id
+        workflow_id = project_dto.workflow
         from_state_id = task_dto.state_id
         to_state_id = transition_details_query_dict['to_state_id']
 
@@ -193,7 +193,7 @@ class TestGetStatesTransitionDetails:
             transition_details_query_dict['task_id'])
         project_storage\
             .validate_state_transition.assert_called_once_with(
-                project_dto.workflow_id,
+                project_dto.workflow,
                 task_dto.state_id,
                 transition_details_query_dict['to_state_id'])
         project_presenter.raise_invalid_transition_exception\

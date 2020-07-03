@@ -11,9 +11,20 @@ snapshots['TestCase01CreateProjectAPITestCase::test_case status'] = 201
 
 snapshots['TestCase01CreateProjectAPITestCase::test_case body'] = {
     'created_at': '2020-06-26 00:00:00',
-    'created_by': 1,
+    'created_by': {
+        'phone_no': '',
+        'profile_pic': '',
+        'user_id': 1,
+        'username': 'username'
+    },
     'description': 'Some_Random_Text',
     'developers': [
+        {
+            'phone_no': '',
+            'profile_pic': '',
+            'user_id': 1,
+            'username': 'username'
+        }
     ],
     'name': 'Test_Project',
     'project_id': 1,
@@ -28,7 +39,7 @@ snapshots['TestCase01CreateProjectAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '260',
+        '405',
         'Content-Length'
     ],
     'content-type': [

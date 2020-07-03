@@ -1,3 +1,5 @@
+from typing import List
+
 from project_management_portal.interactors\
     .presenters.project_presenter_interface\
     import ProjectPresenterInterface
@@ -15,7 +17,7 @@ from project_management_portal.constants.exception_messages\
            INVALID_OFFSET
 
 from project_management_portal.dtos\
-    import UserDto, ProjectDetailsDto
+    import UserDto, ProjectDto, ProjectsDetailsDto
 
 class ProjectPresenterImplementation(ProjectPresenterInterface):
 
@@ -30,7 +32,7 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
 
     def raise_unauthorized_developer_exception(self):
         raise Unauthorized(*UN_AUTHORIZED_DEVELOPER)
-    
+
     def raise_invalid_limit_value_exception(self):
         raise BadRequest(*INVALID_LIMIT)
 
@@ -39,41 +41,33 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
 
     def get_project_details_response(
             self,
-            project_details_dto: ProjectDetailsDto
+            projects_details_dto: ProjectsDetailsDto
             ):
 
-        # creator_details = self._convert_user_dto_to_dict(
-        #     user_dto=project_details_dto.created_by_id)
+        project_details = self.get_projects_response(
+            total_projects_count=1,
+            projects_details_dto=projects_details_dto)['projects'][0]
 
-        project_developer_ids = project_details_dto.developer_ids
-
-        response = {
-            "project_id": project_details_dto.project_id,
-            "name": project_details_dto.name,
-            "description": project_details_dto.description,
-            "workflow": project_details_dto.workflow,
-            "project_type": project_details_dto.project_type,
-            "created_by": project_details_dto.created_by_id,
-            "created_at": str(project_details_dto.created_at),
-            "developers": project_developer_ids
-        }
-        return response
+        return project_details
 
     def get_projects_response(self,
-                              total_projects_count,
-                              all_projects_details_dtos):
+                              total_projects_count: int,
+                              projects_details_dto: ProjectsDetailsDto):
 
-        user_project_dtos = all_projects_details_dtos
+        user_project_dtos = projects_details_dto.project_dtos
+        user_dtos = projects_details_dto.user_dtos
+
         projects_details_dict = [
-            self.get_project_details_response(project_dto)
+            self._prepare_project_details_dict(project_dto, user_dtos)
             for project_dto in user_project_dtos
             ]
+
         response = {
             "total_projects": total_projects_count,
             "projects": projects_details_dict
         }
         return response
-    
+
     def get_transition_details_response(self, transition_details_dtos):
 
         from_state_dto = transition_details_dtos.from_state
@@ -96,6 +90,49 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
     def raise_checklist_not_satisfied_exception(self):
         raise BadRequest(*CHECKLIST_NOT_SATISFIED)
 
+
+    def _prepare_project_details_dict(self, project_dto: ProjectDto,
+                                     user_dtos: List[UserDto]
+                                    ):
+        created_by_id = project_dto.created_by_id
+        creator_details = self._prepare_user_details(
+            user_dtos=user_dtos,
+            user_id=created_by_id
+            )
+        developers_ids = project_dto.developers_ids
+
+        developers_details = [
+            self._prepare_user_details(user_dtos=user_dtos,
+                                      user_id=developer_id
+                                     )
+            for developer_id in developers_ids
+            ]
+
+        project_details = {
+            "project_id": project_dto.project_id,
+            "name": project_dto.name,
+            "description": project_dto.description,
+            "workflow": project_dto.workflow,
+            "project_type": project_dto.project_type,
+            "created_by": creator_details,
+            "created_at": str(project_dto.created_at),
+            "developers": developers_details
+        }
+        return project_details
+
+    def _prepare_user_details(self, user_dtos: List[UserDto], user_id: int):
+
+        required_user_dto = None
+        for user_dto in user_dtos:
+            is_user_matched = user_id == user_dto.user_id
+
+            if is_user_matched:
+                required_user_dto = user_dto
+                break
+
+        user_details = self._convert_user_dto_to_dict(required_user_dto)
+        return user_details
+
     @staticmethod
     def _convert_user_dto_to_dict(user_dto: UserDto):
         user_dict = {
@@ -106,7 +143,7 @@ class ProjectPresenterImplementation(ProjectPresenterInterface):
         }
 
         return user_dict
-    
+
     @staticmethod
     def _convert_checklist_dto_to_dict(checklist_dto):
 

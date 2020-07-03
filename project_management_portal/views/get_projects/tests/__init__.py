@@ -11,8 +11,6 @@ from .test_case_03 import TestCase03GetProjectsAPIWithInvalidLimitTestCase
 from .test_case_04 import TestCase04GetProjectsAPIWithInvalidLimitTestCase
 from .test_case_05\
     import TestCase05GetProjectsAPIWithInvalidOffsetTestCase
-from .test_case_06\
-    import TestCase06GetProjectsAPIWithInvalidLimitTestCase
 
 __all__ = [
     "TestCase01GetProjectsAPIForNormalUserTestCase",
@@ -20,5 +18,4 @@ __all__ = [
     "TestCase03GetProjectsAPIWithInvalidLimitTestCase",
     "TestCase04GetProjectsAPIWithInvalidLimitTestCase",
     "TestCase05GetProjectsAPIWithInvalidOffsetTestCase",
-    "TestCase06GetProjectsAPIWithInvalidLimitTestCase"
 ]

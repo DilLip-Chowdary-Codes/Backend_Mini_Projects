@@ -1,13 +1,15 @@
 from .dtos\
-    import UserDto, ProjectDto, ProjectDetailsDto,\
-            StateDto, TaskDto, TaskDetailsDto,\
-            TransitionDto, TransitionDetailsDto,\
-            WorkflowDetailsDto, StateDetailsDto,\
-            GetTransitionDetailsDto, ChecklistDetailsDto,\
-            ChecklistStatusDto, UpdateTransitionInputDto
+    import UserDto,\
+           CreateProjectRequestDto, ProjectDto, ProjectsDetailsDto,\
+           StateDto, TaskDto, TaskDetailsDto,\
+           TransitionDto, TransitionDetailsDto,\
+           WorkflowDetailsDto, StateDetailsDto,\
+           GetTransitionDetailsDto, ChecklistDetailsDto,\
+           ChecklistStatusDto, UpdateTransitionInputDto
 
 __all__ = [
-    "UserDto", "ProjectDto", "ProjectDetailsDto",
+    "UserDto",
+    "CreateProjectRequestDto", "ProjectDto", "ProjectsDetailsDto",
     "StateDto", "TaskDto", "TaskDetailsDto",
     "TransitionDto", "TransitionDetailsDto",\
     "WorkflowDetailsDto", "StateDetailsDto",\

@@ -21,30 +21,84 @@ snapshots['TestProjectPresenter.test_raise_invalid_offset_value_exception error_
 
 snapshots['TestProjectPresenter.test_get_project_details_response project_details'] = {
     'created_at': '2020-05-28 10:06:23 AM',
-    'created_by': 1,
+    'created_by': {
+        'phone_no': '8739835635',
+        'profile_pic': 'http://www.google.com',
+        'user_id': 1,
+        'username': 'username_1'
+    },
     'description': "it's a blaw blaw blaw blaw  blaw blaw ",
     'developers': [
-        1
+        {
+            'phone_no': '8739835635',
+            'profile_pic': 'http://www.google.com',
+            'user_id': 1,
+            'username': 'username_1'
+        },
+        {
+            'phone_no': '8739835635',
+            'profile_pic': 'http://www.google.com',
+            'user_id': 2,
+            'username': 'username_2'
+        }
     ],
     'name': 'projectManagement',
     'project_id': 1,
     'project_type': 'Classic Software',
-    'workflow': 'type'
+    'workflow': 'Workflow_1'
 }
 
 snapshots['TestProjectPresenter.test_get_projects_response projects_details'] = {
     'projects': [
         {
             'created_at': '2020-05-28 10:06:23 AM',
-            'created_by': 1,
+            'created_by': {
+                'phone_no': '8739835635',
+                'profile_pic': 'http://www.google.com',
+                'user_id': 1,
+                'username': 'username_1'
+            },
             'description': "it's a blaw blaw blaw blaw  blaw blaw ",
             'developers': [
-                1
+                {
+                    'phone_no': '8739835635',
+                    'profile_pic': 'http://www.google.com',
+                    'user_id': 1,
+                    'username': 'username_1'
+                },
+                {
+                    'phone_no': '8739835635',
+                    'profile_pic': 'http://www.google.com',
+                    'user_id': 2,
+                    'username': 'username_2'
+                }
             ],
             'name': 'projectManagement',
             'project_id': 1,
             'project_type': 'Classic Software',
-            'workflow': 'type'
+            'workflow': 'Workflow_1'
+        },
+        {
+            'created_at': '2020-05-28 10:06:23 AM',
+            'created_by': {
+                'phone_no': '8739835635',
+                'profile_pic': 'http://www.google.com',
+                'user_id': 1,
+                'username': 'username_1'
+            },
+            'description': "it's a blaw blaw blaw blaw  blaw blaw ",
+            'developers': [
+                {
+                    'phone_no': '8739835635',
+                    'profile_pic': 'http://www.google.com',
+                    'user_id': 2,
+                    'username': 'username_2'
+                }
+            ],
+            'name': 'projectManagement_2',
+            'project_id': 2,
+            'project_type': 'Classic Software',
+            'workflow': 'Workflow_2'
         }
     ],
     'total_projects': 1

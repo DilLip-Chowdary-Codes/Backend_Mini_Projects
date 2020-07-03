@@ -13,10 +13,20 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
     'projects': [
         {
             'created_at': '2020-06-26 00:00:00',
-            'created_by': 1,
+            'created_by': {
+                'phone_no': '',
+                'profile_pic': '',
+                'user_id': 1,
+                'username': 'username'
+            },
             'description': 'project_1_description',
             'developers': [
-                1
+                {
+                    'phone_no': '',
+                    'profile_pic': '',
+                    'user_id': 1,
+                    'username': 'username'
+                }
             ],
             'name': 'project_1',
             'project_id': 1,
@@ -25,10 +35,20 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
         },
         {
             'created_at': '2020-06-26 00:00:00',
-            'created_by': 1,
+            'created_by': {
+                'phone_no': '',
+                'profile_pic': '',
+                'user_id': 1,
+                'username': 'username'
+            },
             'description': 'project_2_description',
             'developers': [
-                1
+                {
+                    'phone_no': '',
+                    'profile_pic': '',
+                    'user_id': 1,
+                    'username': 'username'
+                }
             ],
             'name': 'project_2',
             'project_id': 2,
@@ -37,14 +57,46 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case body'] = {
         },
         {
             'created_at': '2020-06-26 00:00:00',
-            'created_by': 1,
+            'created_by': {
+                'phone_no': '',
+                'profile_pic': '',
+                'user_id': 1,
+                'username': 'username'
+            },
             'description': 'project_3_description',
             'developers': [
-                1
+                {
+                    'phone_no': '',
+                    'profile_pic': '',
+                    'user_id': 1,
+                    'username': 'username'
+                }
             ],
             'name': 'project_3',
             'project_id': 3,
             'project_type': 'CRM',
+            'workflow': 'workflow_1'
+        },
+        {
+            'created_at': '2020-06-26 00:00:00',
+            'created_by': {
+                'phone_no': '',
+                'profile_pic': '',
+                'user_id': 1,
+                'username': 'username'
+            },
+            'description': 'project_4_description',
+            'developers': [
+                {
+                    'phone_no': '',
+                    'profile_pic': '',
+                    'user_id': 1,
+                    'username': 'username'
+                }
+            ],
+            'name': 'project_4',
+            'project_id': 4,
+            'project_type': 'Classic Software',
             'workflow': 'workflow_1'
         }
     ],
@@ -57,7 +109,7 @@ snapshots['TestCase01GetProjectsAPIForNormalUserTestCase::test_case header_param
         'en'
     ],
     'content-length': [
-        '660',
+        '1451',
         'Content-Length'
     ],
     'content-type': [

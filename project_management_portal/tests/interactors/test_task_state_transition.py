@@ -73,7 +73,7 @@ class TestTaskTransition:
         task_storage.validate_task_id.assert_called_once_with(
             task_id=task_id)
         project_storage.validate_state_transition.assert_called_once_with(
-            project_dto.workflow_id,
+            project_dto.workflow,
             task_dto.state_id,
             to_state_id
             )
@@ -196,7 +196,7 @@ class TestTaskTransition:
         task_storage.validate_task_id.assert_called_once_with(
             task_id=task_id)
         project_storage.validate_state_transition.assert_called_once_with(
-            project_dto.workflow_id,
+            project_dto.workflow,
             task_dto.state_id,
             to_state_id
             )
@@ -253,7 +253,7 @@ class TestTaskTransition:
         task_storage.validate_task_id.assert_called_once_with(
             task_id=task_id)
         project_storage.validate_state_transition.assert_called_once_with(
-            project_dto.workflow_id,
+            project_dto.workflow,
             task_dto.state_id,
             to_state_id
             )

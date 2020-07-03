@@ -114,7 +114,7 @@ class TaskStorageImplementation(TaskStorageInterface):
     def _convert_task_obj_to_task_details_dto(task_obj):
         project_utils = ProjectStorageImplementation()
         projec_details_dto = project_utils\
-            ._convert_project_object_to_project_details_dto(task_obj.project)
+            ._convert_project_object_to_projects_details_dto(task_obj.project)
 
         task_details_dto = TaskDetailsDto(
             task_id=task_obj.id,
